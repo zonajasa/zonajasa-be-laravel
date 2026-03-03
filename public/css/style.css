@@ -1,0 +1,261 @@
+/* NAVBAR */
+.navbar-landing {
+    padding: 18px 0;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    background: rgba(13,110,253,.15);
+    transition: all .3s ease;
+}
+
+.navbar-landing.scrolled {
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.navbar-landing.scrolled .nav-link,
+.navbar-landing.scrolled .navbar-brand {
+    color: #000 !important;
+}
+
+.navbar-logo {
+    height: 34px;
+    width: auto;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+}
+
+@media (max-width: 576px) {
+    .navbar-nav {
+        gap: 12px;
+    }
+
+    .navbar-brand span {
+        display: none; /* hanya logo */
+    }
+}
+
+/* HERO */
+.hero-section {
+    padding: 140px 0 100px;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    color: #fff;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    opacity: .9;
+}
+
+.hero-mockup {
+    max-height: 520px;
+    animation: float 4s ease-in-out infinite;
+}
+
+.hero-mockup-small {
+    max-width: 90%;
+    height: auto;
+}
+
+/* Default (Desktop) */
+.store-badge {
+    height: 55px;
+    width: auto;
+    transition: transform .2s ease;
+}
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 14px;
+    }
+
+    /* Typography */
+    .hero-title {
+        font-size: 1.9rem !important;
+        line-height: 1.3;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    /* Hero layout */
+    .hero-section {
+        padding-top: 110px;
+        padding-bottom: 70px;
+        text-align: center;
+    }
+
+    .hero-mockup-small {
+        max-width: 75%;
+        margin-top: 30px;
+    }
+
+    /* Store badges */
+    .store-badge-wrapper {
+        justify-content: center !important;
+    }
+
+    .store-badge {
+        height: 42px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .navbar-brand span {
+        display: none;
+    }
+
+    .navbar-logo {
+        height: 28px;
+    }
+
+    .navbar-nav {
+        gap: 10px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 0.85rem;
+    }
+
+    .navbar-nav .btn {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+    }
+
+    .store-badge {
+        height: 38px;
+    }
+}
+
+.store-badge:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+/* FEATURES */
+.features-section {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.feature-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 35px 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: #fff;
+    font-size: 26px;
+}
+
+.feature-card h5 {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    font-size: 15px;
+    color: #6c757d;
+    line-height: 1.7;
+}
+
+/* FAQ */
+/* FAQ SECTION */
+.faq-section {
+    padding: 100px 0;
+    background: linear-gradient(180deg, #f8f9fa, #ffffff);
+}
+
+.faq-wrapper {
+    max-width: 900px;
+}
+
+/* Accordion item */
+.accordion-item {
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    overflow: hidden;
+}
+
+/* Accordion button */
+.accordion-button {
+    background: transparent;
+    font-weight: 600;
+    padding: 22px 24px;
+    font-size: 1rem;
+}
+
+.accordion-button::after {
+    background-size: 1.1rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background: rgba(13,110,253,.05);
+    box-shadow: none;
+}
+
+/* Accordion body */
+.accordion-body {
+    padding: 0 24px 24px;
+    color: #6c757d;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .accordion-button {
+        font-size: 0.9rem;
+        padding: 18px 20px;
+    }
+
+    .accordion-body {
+        font-size: 0.9rem;
+    }
+}
+
+/* FOOTER */
+.footer {
+    background: #0b0b0b;
+    color: #ccc;
+    padding: 30px 0;
+}
+
+/* ANIMATION */
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
