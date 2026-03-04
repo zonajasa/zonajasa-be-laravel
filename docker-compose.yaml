@@ -1,0 +1,93 @@
+services:
+  #app
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: zonajasa
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    networks:
+      - laravel
+
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - 4406:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: zonajasa
+      MYSQL_ROOT_PASSWORD: MLtalBcE867g
+      MYSQL_PASSWORD: MLtalBcE867g
+      MYSQL_USER: user_zonajasa
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - laravel
+
+  #PhpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - 7000:80
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: user_zonajasa
+      PMA_PASSWORD: MLtalBcE867g
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    volumes:
+      - phpmyadmin:/etc/phpmyadmin
+    networks:
+      - laravel
+
+  #N8N
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    env_file:
+      - .env
+    volumes:
+      - n8n:/home/node/.n8n
+      - /var/www:/home/xamppsul/.docker/volume
+    networks:
+      - laravel
+
+  #Waha
+  waha:
+    image: devlikeapro/waha:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - waha_data:/app/.waha
+      - waha_files:/app/files
+    networks:
+      - laravel
+
+
+volumes:
+  mysql:
+  phpmyadmin:
+  n8n:
+  waha_data:
+  waha_files:
+
+networks:
+  laravel:
+    driver: bridge

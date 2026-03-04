@@ -1,53 +1,53 @@
-zj-start:
-	docker compose -f docker-compose.yml up -d
+#================= Docker Command Laravel and PHP ================
+zj-docker-start:
+	docker compose -f docker-compose.yaml up -d
 #stop docker haircut
-zj-stop:
-	docker compose -f docker-compose.yml down
+zj-docker-stop:
+	docker compose -f docker-compose.yaml down
 #list docker haircut
-zj-ps:
-	docker compose -f docker-compose.yml ps
+zj-docker-ps:
+	docker compose -f docker-compose.yaml ps
 #list docker images
-zj-image:
+zj-docker-image:
 	docker image ls
 #restart docker haircut
-zj-restart:
-	docker compose -f docker-compose.yml restart
+zj-docker-restart:
+	docker compose -f docker-compose.yaml restart
 #logs docker haircut
-zj-logs:
-	docker compose -f docker-compose.yml logs -f
+zj-docker-logs:
+	docker compose -f docker-compose.yaml logs -f
 #build docker haircut
-zj-build:
-	docker compose -f docker-compose.yml build dashboard
-
-#================= Docker Command Laravel and PHP ================
-zj-migrate:
-	docker compose -f docker-compose.yml exec dashboard php artisan migrate
-	docker compose -f docker-compose.yml exec dashboard php artisan db:seed
-zj-rollback:
-	docker compose -f docker-compose.yml exec dashboard php artisan migrate:rollback
+zj-docker-build:
+	docker compose -f docker-compose.yaml build app
+zj-docker-migrate:
+	docker compose -f docker-compose.yaml exec app php artisan migrate
+	docker compose -f docker-compose.yaml exec app php artisan db:seed
+zj-docker-rollback:
+	docker compose -f docker-compose.yaml exec app php artisan migrate:rollback
 #exec run migrate refresh
-zj-refresh:
-	docker compose -f docker-compose.yml exec dashboard php artisan migrate:refresh
-	docker compose -f docker-compose.yml exec dashboard php artisan db:seed
+zj-docker-refresh:
+	docker compose -f docker-compose.yaml exec app php artisan migrate:refresh
+	docker compose -f docker-compose.yaml exec app php artisan db:seed
 #exec run seeder
-zj-seed:
-	docker compose -f docker-compose.yml exec dashboard php artisan db:seed
+zj-docker-seed:
+	docker compose -f docker-compose.yaml exec app php artisan db:seed
 #exec app docker via composer install
-zj-composer-install:
-	docker compose -f docker-compose.yml exec dashboard composer install
-zj-composer-update:
-	docker compose -f docker-compose.yml exec dashboard composer update
-zj-php-m:
-	docker compose -f docker-compose.yml exec dashboard php -m
-zj-dir-project:
-	docker exec -it yotta-dashboard bash
-zj-laravel-optimize-all:
-	docker compose -f docker-compose.yml exec dashboard php artisan optimize
-	docker compose -f docker-compose.yml exec dashboard php artisan cache:clear
-	docker compose -f docker-compose.yml exec dashboard php artisan config:clear
-	docker compose -f docker-compose.yml exec dashboard php artisan route:clear
-	docker compose -f docker-compose.yml exec dashboard php artisan view:clear
+zj-docker-composer-install:
+	docker compose -f docker-compose.yaml exec app composer install
+zj-docker-composer-update:
+	docker compose -f docker-compose.yaml exec app composer update
+zj-docker-php-m:
+	docker compose -f docker-compose.yaml exec app php -m
+zj-docker-dir-project:
+	docker exec -it zonajasa bash
+zj-docker-laravel-optimize-all:
+	docker compose -f docker-compose.yaml exec app php artisan optimize
+	docker compose -f docker-compose.yaml exec app php artisan cache:clear
+	docker compose -f docker-compose.yaml exec app php artisan config:clear
+	docker compose -f docker-compose.yaml exec app php artisan route:clear
+	docker compose -f docker-compose.yaml exec app php artisan view:clear
 
+#================= Laravel and PHP Command =================
 sj-start:
 	php artisan serve
 sj-octane:
