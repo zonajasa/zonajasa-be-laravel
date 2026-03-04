@@ -4,30 +4,17 @@
 
 @section('content')
 
-<nav class="navbar fixed-top bg-transparent navbar-landing">
+<nav class="navbar fixed-top navbar-landing">
     <div class="container d-flex align-items-center justify-content-between">
-
-        <!-- Logo / Brand -->
-        <a class="navbar-brand fw-bold text-dark d-flex align-items-center gap-2" href="#hero">
-            <img src="{{ asset('images/LogoZonaJasa.png') }}"
-                alt="ZonaJasa Logo"
-                class="navbar-logo">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#hero">
+            <img src="{{ asset('images/LogoZonaJasa.png') }}" alt="ZonaJasa Logo" class="navbar-logo">
             <span>ZonaJasa</span>
         </a>
-
-        <!-- Menu kanan (selalu tampil) -->
         <ul class="navbar-nav d-flex flex-row align-items-center gap-4 mb-0">
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#features">Fitur</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#faq">FAQ</a>
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-primary btn-sm px-4 rounded-pill" href="#download">
-                    Get App
-                </a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
+            <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+            <li class="nav-item"><a class="btn btn-primary btn-sm px-4 rounded-pill" href="#download">Get App</a></li>
         </ul>
     </div>
 </nav>

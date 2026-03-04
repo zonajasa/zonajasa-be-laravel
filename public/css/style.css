@@ -7,23 +7,15 @@
     transition: all .3s ease;
 }
 
-.navbar-landing.scrolled {
-    background: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,.08);
-}
-
-.navbar-landing.scrolled .nav-link,
-.navbar-landing.scrolled .navbar-brand {
-    color: #000 !important;
-}
-
 .navbar-logo {
     height: 34px;
     width: auto;
 }
 
-.navbar-nav .nav-link {
+.navbar-nav .nav-link.active {
     font-weight: 500;
+    color: #fff !important;
+    border-bottom: 2px solid #fff;
 }
 
 @media (max-width: 576px) {
@@ -34,6 +26,25 @@
     .navbar-brand span {
         display: none; /* hanya logo */
     }
+}
+
+/* Navbar saat scroll */
+.navbar-landing.scrolled {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Semua link dan brand tetap putih */
+.navbar-landing .nav-link,
+.navbar-landing .navbar-brand span,
+.navbar-landing .btn {
+    color: #fff !important;
+}
+
+/* Link aktif tetap putih dan underline */
+.navbar-landing .nav-link.active {
+    font-weight: 600;
+    border-bottom: 2px solid #fff;
 }
 
 /* HERO */
@@ -148,7 +159,7 @@
 /* FEATURES */
 .features-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    background: #ffffff;
 }
 
 .feature-card {
@@ -192,7 +203,7 @@
 /* FAQ SECTION */
 .faq-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    background: linear-gradient(180deg, #f8f9fa, #ffffff);
 }
 
 .faq-wrapper {

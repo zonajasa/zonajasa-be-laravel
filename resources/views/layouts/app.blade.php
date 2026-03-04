@@ -40,10 +40,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        window.addEventListener('scroll', () => {
-            document
-                .querySelector('.navbar-landing')
-                .classList.toggle('scrolled', window.scrollY > 60);
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.querySelector('.navbar-landing');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            // Toggle background saat scroll
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Active link saat diklik
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         });
     </script>
 </body>
