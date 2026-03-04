@@ -48,25 +48,25 @@ zj-docker-laravel-optimize-all:
 	docker compose -f docker-compose.yaml exec app php artisan view:clear
 
 #================= Laravel and PHP Command =================
-sj-start:
+zj-start:
 	php artisan serve
-sj-octane:
+zj-octane:
 	php artisan octane:start --server=swoole
-sj-migrate:
+zj-migrate:
 	php artisan migrate
-sj-rollback:
+zj-rollback:
 	php artisan migrate:rollback
-sj-refresh:
+zj-refresh:
 	php artisan migrate:refresh
-sj-seed:
+zj-seed:
 	php artisan db:seed
-sj-laravel-optimize-all:
+zj-laravel-optimize-all:
 	php artisan optimize
 	php artisan cache:clear
 	php artisan config:clear
 	php artisan route:clear
 	php artisan view:clear
-sj-job-lorawan:
+zj-job-lorawan:
 	php artisan queue:work
-sj-lorajob-start:
+zj-lorajob-start:
 	while true; do php artisan schedule:run; done
