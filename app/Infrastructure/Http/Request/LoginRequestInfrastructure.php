@@ -16,7 +16,7 @@ class LoginRequestInfrastructure extends FormRequest
     {
         return [
             // use digits_between to validate the number of digits instead of max value
-            'no_whatsapp' => 'required|numeric|digits_between:1,13',
+            'ephone' => 'required|string',
             'password' => 'required|string',
         ];
     }
@@ -24,9 +24,7 @@ class LoginRequestInfrastructure extends FormRequest
     public function messages(): array
     {
         return [
-            'no_whatsapp.required' => 'Nomor WhatsApp wajib di isi',
-            'no_whatsapp.digits_between' => 'Nomor WhatsApp maksimal 13 digit',
-            'no_whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka',
+            'ephone.required' => 'Nomor WhatsApp wajib di isi',
             'password.required' => 'Password wajib di isi'
         ];
     }

@@ -4,12 +4,12 @@ namespace App\Internal\Api\Auth\DTOs;
 
 class AuthLoginDTOs
 {
-    public int $no_whatsapp;
+    public string $ephone;
     public string $password;
 
-    public function __construct(int $no_whatsapp, string $password)
+    public function __construct(string $ephone, string $password)
     {
-        $this->no_whatsapp = $no_whatsapp;
+        $this->ephone = $ephone;
         $this->password = $password;
     }
 }

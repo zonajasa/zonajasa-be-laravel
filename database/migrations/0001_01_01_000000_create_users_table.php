@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_lengkap');
             $table->string('email')->unique();
-            $table->integer('no_whatsapp')->unique();
+            $table->string('no_whatsapp')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->rememberToken();

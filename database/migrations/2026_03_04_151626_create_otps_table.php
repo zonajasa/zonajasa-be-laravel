@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('otps', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
-            $table->integer('no_whatsapp');
+            $table->string('code')->unique();
+            $table->string('no_whatsapp')->nullable()->unique();
+            $table->string('email')->nullable()->unique();
             $table->time('expired_at');
             $table->timestamps();
         });
