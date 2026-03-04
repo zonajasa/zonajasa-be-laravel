@@ -1,9 +1,12 @@
 <?php
 
-use App\Models\User;
+use App\Infrastructure\Database\Eloquent\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Token;
+
+#import auth routes
+require base_path('app/Internal/Api/Auth/Routes/AuthRoutes.php');
 
 Route::get('/user-session', function (Request $request) {
     return $request->user(); //get user session
