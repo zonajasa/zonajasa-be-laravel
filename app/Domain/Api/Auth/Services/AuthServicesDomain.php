@@ -36,7 +36,6 @@ class AuthServicesDomain
                 ? $this->repository->OTPSendRequestByEmail($otp, $ephone) :
                 $this->repository->OTPSendRequestByWhatsapp($otp, $ephone);
 
-            $user['token'] = $user->createToken('zonajasa')->accessToken;
             return OkRes($success_login, $user);
         } catch (\Exception $e) {
             Log::error('AuthServicesDomain Error: ' . $e->getMessage());
