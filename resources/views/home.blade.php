@@ -64,21 +64,24 @@
         <div class="container" data-aos="fade-up">
             <div class="section-title">
                 <h2>About</h2>
-                <div><span>Learn More</span> <span class="description-title">About Us</span></div>
+                <div><span>Learn More</span> <span class="description-title">About Zona Jasa</span></div>
             </div>
 
             <div class="row">
                 <div class="col-lg-6">
                     <p>
-                        Zona Jasa is a modern landing page template built with Bootstrap.
-                        Perfect for startups, SaaS, and digital services.
+                        Zona Jasa adalah platform modern untuk mencari dan menemukan berbagai layanan profesional dengan cepat dan mudah.
+                        Cocok untuk individu maupun bisnis yang membutuhkan jasa terpercaya di berbagai bidang.
+                        Dengan Zona Jasa, Anda dapat menemukan penyedia jasa terdekat, membandingkan harga, membaca ulasan, dan memesan layanan secara langsung melalui aplikasi.
                     </p>
                 </div>
                 <div class="col-lg-6">
                     <ul>
-                        <li><i class="bi bi-check-circle"></i> Responsive Design</li>
-                        <li><i class="bi bi-check-circle"></i> Clean UI</li>
-                        <li><i class="bi bi-check-circle"></i> Easy Customization</li>
+                        <li><i class="bi bi-check-circle"></i> Temukan penyedia jasa terpercaya di berbagai bidang</li>
+                        <li><i class="bi bi-check-circle"></i> Antarmuka mudah digunakan untuk semua kalangan</li>
+                        <li><i class="bi bi-check-circle"></i> Cepat dan efisien, hemat waktu pencarian</li>
+                        <li><i class="bi bi-check-circle"></i> Review dan rating membantu memilih penyedia jasa terbaik</li>
+                        <li><i class="bi bi-check-circle"></i> Dukungan pelanggan siap membantu kapan saja</li>
                     </ul>
                 </div>
             </div>
@@ -95,25 +98,46 @@
             </div>
 
             <div class="row gy-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
-                        <i class="bi bi-speedometer2"></i>
-                        <h4>Fast Performance</h4>
-                        <p>Optimized for speed and usability.</p>
+                        <i class="bi bi-search"></i>
+                        <h4>Easy Search</h4>
+                        <p>Cari jasa yang Anda butuhkan dengan cepat dan akurat, berdasarkan lokasi atau kategori.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
-                        <i class="bi bi-palette"></i>
-                        <h4>Modern Design</h4>
-                        <p>Clean and professional UI.</p>
+                        <i class="bi bi-people"></i>
+                        <h4>Trusted Providers</h4>
+                        <p>Terhubung dengan penyedia jasa profesional dan terpercaya, sudah diverifikasi oleh sistem kami.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
-                        <i class="bi bi-shield-check"></i>
-                        <h4>Secure</h4>
-                        <p>Built with best security practices.</p>
+                        <i class="bi bi-phone"></i>
+                        <h4>Instant Booking</h4>
+                        <p>Pesan layanan langsung melalui aplikasi, mudah dan cepat tanpa ribet.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box">
+                        <i class="bi bi-star"></i>
+                        <h4>Ratings & Reviews</h4>
+                        <p>Baca ulasan dan rating pengguna lain untuk memastikan kualitas layanan sebelum memesan.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box">
+                        <i class="bi bi-cash-stack"></i>
+                        <h4>Transparent Pricing</h4>
+                        <p>Lihat harga jasa secara jelas dan bandingkan penyedia layanan untuk keputusan terbaik.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box">
+                        <i class="bi bi-clock-history"></i>
+                        <h4>Service History</h4>
+                        <p>Lacak semua layanan yang pernah Anda pesan, termasuk status dan detail penyedia jasa.</p>
                     </div>
                 </div>
             </div>
