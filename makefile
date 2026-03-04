@@ -1,22 +1,22 @@
 #================= Docker Command Laravel and PHP ================
 zj-docker-start:
 	docker compose -f docker-compose.yaml up -d
-#stop docker haircut
+#stop docker zonajasa
 zj-docker-stop:
 	docker compose -f docker-compose.yaml down
-#list docker haircut
+#list docker zonajasa
 zj-docker-ps:
 	docker compose -f docker-compose.yaml ps
 #list docker images
 zj-docker-image:
 	docker image ls
-#restart docker haircut
+#restart docker zonajasa
 zj-docker-restart:
 	docker compose -f docker-compose.yaml restart
-#logs docker haircut
+#logs docker zonajasa
 zj-docker-logs:
 	docker compose -f docker-compose.yaml logs -f
-#build docker haircut
+#build docker zonajasa
 zj-docker-build:
 	docker compose -f docker-compose.yaml build app
 zj-docker-migrate:
