@@ -21,4 +21,6 @@ class AuthHandler extends AuthConstant
 
         return $this->usecase->AuthServiceLogin($dto_login, static::ERROR_EMAIL_OR_NO_WHATSAPP, static::ERROR_PASSWORD, static::SUCCESS_LOGIN);
     }
+
+    public function VerifyLogin() {}
 }

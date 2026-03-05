@@ -8,6 +8,7 @@ use App\Infrastructure\Database\Eloquent\User;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainInterface
 {
@@ -17,9 +18,9 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return User::where($field, $ephone)->first();
     }
 
-    public function ValidatePassword(string $password, string $hashPassword): bool
+    public function ValidatePassword(string $password, string $hash_password): bool
     {
-        return !Hash::check($password, $hashPassword) ? false : true;
+        return !Hash::check($password, $hash_password) ? false : true;
     }
 
     public function OTPSendRequestByWhatsapp(int $code_otp, int $no_whatsapp): void
@@ -36,17 +37,31 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
                 . "Kode berlaku selama *1 menit*.",
             "session" => "default"
         ]);
+    }
 
-        Otp::create([
+    public function OTPSendRequestByEmail(int $code_otp, string $email, string $full_name): void
+    {
+        //send otp by email via smtp
+        Mail::to($email)->send(new \App\Mail\OtpMail($code_otp, $full_name));
+    }
+
+    public function SubmitOTPVerify(int $code_otp, string $ephone): Otp
+    {
+
+        if (!filter_var($ephone, FILTER_VALIDATE_EMAIL)) {
+            return Otp::create([
+                'code' => Crypt::encryptString($code_otp),
+                'no_whatsapp' => Crypt::encryptString($ephone),
+                'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
+                'created_at' => now()->timezone(config('app.timezone')),
+            ]);
+        }
+
+        return Otp::create([
             'code' => Crypt::encryptString($code_otp),
-            'no_whatsapp' => Crypt::encryptString($no_whatsapp),
+            'email' => Crypt::encryptString($ephone),
             'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
-    }
-
-    public function OTPSendRequestByEmail(int $code_otp, string $email): void
-    {
-        //send otp by email via smtp
     }
 }
