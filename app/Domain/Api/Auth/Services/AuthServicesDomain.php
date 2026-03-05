@@ -34,7 +34,7 @@ class AuthServicesDomain
             $otp = rand(100000, 999999);
             filter_var($ephone, FILTER_VALIDATE_EMAIL)
                 ? $this->repository->OTPSendRequestByEmail($otp, $ephone, $user->nama_lengkap) :
-                $this->repository->OTPSendRequestByWhatsapp($otp, $ephone);
+                $this->repository->OTPSendRequestByWhatsapp($otp, $ephone, $user->nama_lengkap);
 
             $this->repository->SubmitOTPVerify($otp, $ephone);
             return OkRes($success_login, $user);

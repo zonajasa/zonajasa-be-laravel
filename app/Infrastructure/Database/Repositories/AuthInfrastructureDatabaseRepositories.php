@@ -23,7 +23,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return !Hash::check($password, $hash_password) ? false : true;
     }
 
-    public function OTPSendRequestByWhatsapp(int $code_otp, int $no_whatsapp): void
+    public function OTPSendRequestByWhatsapp(int $code_otp, int $no_whatsapp, string $full_name): void
     {
         //send api whatsapp
         Http::withHeaders([
@@ -31,7 +31,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'Accept' => config('services.waha.accept')
         ])->post(config('services.waha.api_base_url') . "/api/sendText", [
             "chatId" => $no_whatsapp . "@c.us",
-            "text" => "*Kode OTP Anda:* {$code_otp}\n\n"
+            "text" => "*Halo {$full_name}, Kode OTP Anda:* {$code_otp}\n\n"
                 . "Gunakan kode ini untuk verifikasi akun Anda.\n"
                 . "Jangan bagikan kode ini kepada siapa pun.\n"
                 . "Kode berlaku selama *1 menit*.",

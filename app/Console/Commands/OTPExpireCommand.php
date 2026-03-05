@@ -27,8 +27,6 @@ class OTPExpireCommand extends Command
      */
     public function handle()
     {
-        //hold 3 sec biar gak kaget servernya
-        sleep(3);
         // get otp yang expire
         $otp = DB::table('otps')->where('expired_at', '<', now()->timezone(config('app.timezone'))->format('H:i:s'))->get();
         foreach ($otp as $otp_item) {
