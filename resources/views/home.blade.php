@@ -63,8 +63,8 @@
     <section id="about" class="about section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>About</h2>
-                <div><span>Learn More</span> <span class="description-title">About Zona Jasa</span></div>
+                <h2>Tentang</h2>
+                <div><span>Pelajari Lebih Lanjut</span> <span class="description-title">Tentang Zona Jasa</span></div>
             </div>
 
             <div class="row">
@@ -93,50 +93,50 @@
     <section id="features" class="features section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>Features</h2>
-                <div><span>Our</span> <span class="description-title">Features</span></div>
+                <h2>Fitur</h2>
+                <div><span>Fitur</span> <span class="description-title">Kami</span></div>
             </div>
 
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-search"></i>
-                        <h4>Easy Search</h4>
+                        <h4>Pencarian mudah</h4>
                         <p>Cari jasa yang Anda butuhkan dengan cepat dan akurat, berdasarkan lokasi atau kategori.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-people"></i>
-                        <h4>Trusted Providers</h4>
+                        <h4>Penyedia Jasa Terpercaya</h4>
                         <p>Terhubung dengan penyedia jasa profesional dan terpercaya, sudah diverifikasi oleh sistem kami.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-phone"></i>
-                        <h4>Instant Booking</h4>
+                        <h4>Pemesanan instant</h4>
                         <p>Pesan layanan langsung melalui aplikasi, mudah dan cepat tanpa ribet.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-star"></i>
-                        <h4>Ratings & Reviews</h4>
+                        <h4>Ratings dan ulasan</h4>
                         <p>Baca ulasan dan rating pengguna lain untuk memastikan kualitas layanan sebelum memesan.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-cash-stack"></i>
-                        <h4>Transparent Pricing</h4>
+                        <h4>Harga yang transparan</h4>
                         <p>Lihat harga jasa secara jelas dan bandingkan penyedia layanan untuk keputusan terbaik.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-box">
                         <i class="bi bi-clock-history"></i>
-                        <h4>Service History</h4>
+                        <h4>Riwayat layanan</h4>
                         <p>Lacak semua layanan yang pernah Anda pesan, termasuk status dan detail penyedia jasa.</p>
                     </div>
                 </div>
@@ -149,8 +149,8 @@
     <section id="gallery" class="gallery section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>Gallery</h2>
-                <div><span>Our</span> <span class="description-title">Gallery</span></div>
+                <h2>Galeri</h2>
+                <div><span>Galeri</span> <span class="description-title">Kami</span></div>
             </div>
 
             <div class="row gy-4">
@@ -172,8 +172,8 @@
     <section id="team" class="team section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>Team</h2>
-                <div><span>Our</span> <span class="description-title">Team</span></div>
+                <h2>Tim</h2>
+                <div><span>Tim</span> <span class="description-title">Kami</span></div>
             </div>
 
             <div class="row gy-4">
@@ -214,18 +214,18 @@
     <section id="pricing" class="pricing section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>Pricing</h2>
-                <div><span>Our</span> <span class="description-title">Pricing</span></div>
+                <h2>Harga</h2>
+                <div><span>Penetapan</span> <span class="description-title">Harga</span></div>
             </div>
 
             <div class="row gy-4">
                 <div class="col-lg-4">
                     <div class="pricing-item">
-                        <h3>Free</h3>
+                        <h3>Gratis</h3>
                         <h4><sup>$</sup>0</h4>
                         <ul>
-                            <li>Basic Features</li>
-                            <li>Email Support</li>
+                            <li>Fitur Dasar</li>
+                            <li>Dukungan Email</li>
                         </ul>
                     </div>
                 </div>
@@ -238,21 +238,21 @@
     <section id="contact" class="contact section">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
-                <h2>Contact</h2>
-                <div><span>Get In</span> <span class="description-title">Touch</span></div>
+                <h2>Kontak</h2>
+                <div><span>Hubungi</span> <span class="description-title"></span></div>
             </div>
 
             <div class="row">
                 <div class="col-lg-6">
-                    <p>Email: zonajasaplatform@gmail.com</p>
                     <p>Phone: +62 878 6800 0622</p>
+                    <p>Email: zonajasaplatform@gmail.com</p>
                 </div>
                 <div class="col-lg-6">
                     <form>
-                        <input type="text" class="form-control mb-3" placeholder="Your Name">
-                        <input type="email" class="form-control mb-3" placeholder="Your Email">
-                        <textarea class="form-control mb-3" rows="4" placeholder="Message"></textarea>
-                        <button class="btn btn-primary">Send Message</button>
+                        <input type="text" class="form-control mb-3" placeholder="Nama Anda">
+                        <input type="email" class="form-control mb-3" placeholder="Email Anda">
+                        <textarea class="form-control mb-3" rows="4" placeholder="Pesan"></textarea>
+                        <button class="btn btn-primary">Kirim Pesan</button>
                     </form>
                 </div>
             </div>

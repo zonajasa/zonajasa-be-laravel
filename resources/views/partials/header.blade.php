@@ -10,13 +10,12 @@
         <nav id="navmenu" class="navmenu">
             <ul>
                 <li><a href="{{ route('home') }}#hero" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
-                <li><a href="{{ route('home') }}#about">About</a></li>
-                <li><a href="{{ route('home') }}#features">Features</a></li>
-                <li><a href="{{ route('home') }}#gallery">Gallery</a></li>
-                <li><a href="{{ route('home') }}#team">Team</a></li>
-                <li><a href="{{ route('home') }}#pricing">Pricing</a></li>
-                <li><a href="{{ route('home') }}#contact">Contact</a></li>
-
+                <li><a href="{{ route('home') }}#about">Tentang</a></li>
+                <li><a href="{{ route('home') }}#features">Fitur</a></li>
+                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                <li><a href="{{ route('home') }}#team">Tim</a></li>
+                <li><a href="{{ route('home') }}#pricing">Harga</a></li>
+                <li><a href="{{ route('home') }}#contact">Kontak</a></li>
             </ul>
 
             <!-- Mobile Toggle -->
