@@ -6,6 +6,6 @@ class LandingHandler
 {
     public function index()
     {
-        return view('landing');
+        return view('home');
     }
 }
