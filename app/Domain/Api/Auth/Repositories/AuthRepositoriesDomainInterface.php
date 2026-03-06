@@ -12,4 +12,9 @@ interface AuthRepositoriesDomainInterface
     public function OTPSendRequestByWhatsapp(int $code_otp, int $no_whatsapp, string $full_name): void;
     public function OTPSendRequestByEmail(int $code_otp, string $email, string $full_name): void;
     public function SubmitOTPVerify(int $code_otp, string $ephone): Otp;
+
+    //verify otp
+    public function FindOTPByPhone(string $phone): ?Otp;
+    public function FindOTPByEmailAddress(string $email): ?Otp;
+    public function GenerateSession(string $ephone): array|User;
 }

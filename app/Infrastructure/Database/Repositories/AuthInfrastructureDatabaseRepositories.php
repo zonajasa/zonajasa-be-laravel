@@ -64,4 +64,21 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
     }
+
+    public function FindOTPByPhone(string $phone): ?Otp
+    {
+        return Otp::where('no_whatsapp', $phone)->first(); //wa yang terenkripsi
+    }
+    public function FindOTPByEmailAddress(string $email): ?Otp
+    {
+        return Otp::where('email', $email)->first(); //email yang terenkripsi
+    }
+
+    public function GenerateSession(string $ephone): array|user
+    {
+        $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
+        $data['user'] = User::where($field, $ephone)->first();
+        $data['token'] = $data['user']->createToken('zonajasa')->accessToken;
+        return $data;
+    }
 }
