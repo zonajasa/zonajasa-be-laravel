@@ -4,6 +4,7 @@ namespace App\Domain\Api\Auth\Services;
 
 use App\Domain\Api\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\Eloquent\User;
+use App\Internal\Api\Auth\DTOs\AuthRegisterDTOs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -18,29 +19,27 @@ class AuthServicesDomain
     public function AuthRepositoryLogin(
         string $ephone,
         string $password,
-        string $error_email_or_whatsapp,
-        string $error_password,
-        string $success_login
+        string $message_error_email_or_whatsapp,
+        string $message_error_password,
+        string $message_success_login
     ): JsonResponse {
         try {
             //validate credential
             $user = $this->repository->ValidateEmailOrNoWhatsapp($ephone);
             if (!$user) {
-                return ErrorRes($error_email_or_whatsapp);
+                return ErrorRes($message_error_email_or_whatsapp);
             }
 
             if (!$this->repository->ValidatePassword($password, $user->password)) {
-                return ErrorRes($error_password);
+                return ErrorRes($message_error_password);
             }
 
             //generate otp 6 digit
-            $otp = rand(100000, 999999);
-            filter_var($ephone, FILTER_VALIDATE_EMAIL)
-                ? $this->repository->OTPSendRequestByEmail($otp, $ephone, $user->nama_lengkap) :
-                $this->repository->OTPSendRequestByWhatsapp($otp, $ephone, $user->nama_lengkap);
-
+            $otp = $this->repository->GenerateOTP($ephone, $user->nama_lengkap);
             $submit_otp = $this->repository->SubmitOTPVerify($otp, $ephone);
-            return OkRes($success_login, [
+
+            //return response after submit otp success of login
+            return OkRes($message_success_login, [
                 'ephone' => $submit_otp['no_whatsapp'] ? $submit_otp['no_whatsapp'] : $submit_otp['email'], //yang dikirim dari depan adalah no whatsapp atau email yang terenkripsi
                 'expire' => Carbon::parse($submit_otp['expired_at'])->timezone(config('app.timezone'))
                     ->format('H:i:s')
@@ -83,6 +82,41 @@ class AuthServicesDomain
             }
 
             return ErrorRes($message_verification_otp_failed, 422);
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function AuthRepositoryRegister(AuthRegisterDTOs $data, string $message_success_register)
+    {
+        try {
+
+            //validasi email atau no whatsapp sudah terdaftar sebelumnya
+            if (filter_var($data->ephone, FILTER_VALIDATE_EMAIL) && $this->repository->ValidateEmailIsExists($data->ephone)) {
+                return ErrorRes('Email sudah terdaftar sebelumnya', 422);
+            }
+
+            if (!filter_var($data->ephone, FILTER_VALIDATE_EMAIL) && $this->repository->ValidateNoWhatsappIsExists(formatWhatsappNumber($data->ephone))) {
+                return ErrorRes('No whatsapp sudah terdaftar sebelumnya', 422);
+            }
+
+            //register user
+            $user = $this->repository->UserRegister($data);
+
+            //generate OTP
+            $otp = $this->repository->GenerateOTP($data->ephone, $user['nama_lengkap']);
+
+            //submit OTP
+            $submit_otp = $this->repository->SubmitOTPVerify($otp, $data->ephone);
+
+            //return response success
+            return OkRes($message_success_register, [
+                'ephone' => $submit_otp['no_whatsapp'] ? $submit_otp['no_whatsapp'] : $submit_otp['email'], //yang dikirim dari depan adalah no whatsapp atau email yang terenkripsi
+                'expire' => Carbon::parse($submit_otp['expired_at'])->timezone(config('app.timezone'))
+                    ->format('H:i:s')
+
+            ]);
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
             return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);

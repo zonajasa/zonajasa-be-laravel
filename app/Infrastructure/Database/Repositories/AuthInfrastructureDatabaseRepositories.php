@@ -5,6 +5,7 @@ namespace App\Infrastructure\Database\Repositories;
 use App\Domain\Api\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\Eloquent\Otp;
 use App\Infrastructure\Database\Eloquent\User;
+use App\Internal\Api\Auth\DTOs\AuthRegisterDTOs;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -31,7 +32,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'Accept' => config('services.waha.accept')
         ])->post(config('services.waha.api_base_url') . "/api/sendText", [
             "chatId" => $no_whatsapp . "@c.us",
-            "text" => "*Halo {$full_name}, Kode OTP Anda:* {$code_otp}\n\n"
+            "text" => "*{$code_otp} Kode OTP Anda {$full_name}*\n\n"
                 . "Gunakan kode ini untuk verifikasi akun Anda.\n"
                 . "Jangan bagikan kode ini kepada siapa pun.\n"
                 . "Kode berlaku selama *1 menit*.",
@@ -43,6 +44,15 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         //send otp by email via smtp
         Mail::to($email)->send(new \App\Mail\OtpMail($code_otp, $full_name));
+    }
+
+    public function GenerateOTP(string $ephone, string $full_name): int
+    {
+        $otp = rand(100000, 999999);
+        filter_var($ephone, FILTER_VALIDATE_EMAIL)
+            ? $this->OTPSendRequestByEmail($otp, $ephone, $full_name) :
+            $this->OTPSendRequestByWhatsapp($otp, $ephone, $full_name);
+        return $otp;
     }
 
     public function SubmitOTPVerify(int $code_otp, string $ephone): Otp
@@ -57,6 +67,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             ]);
         }
 
+        //default nya email kalo bukan whatsapp
         return Otp::create([
             'code' => Crypt::encryptString($code_otp),
             'email' => Crypt::encryptString($ephone),
@@ -80,5 +91,34 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         $data['user'] = User::where($field, $ephone)->first();
         $data['token'] = $data['user']->createToken('zonajasa')->accessToken;
         return $data;
+    }
+
+    public function UserRegister(AuthRegisterDTOs $data): User
+    {
+
+        if (filter_var($data->ephone, FILTER_VALIDATE_EMAIL)):
+            return User::create([
+                'nama_lengkap' => $data->nama_lengkap,
+                'email' => $data->ephone,
+                'password' => Hash::make($data->password),
+            ]);
+        endif;
+
+        //default nya whatssapp
+        return User::create([
+            'nama_lengkap' => $data->nama_lengkap,
+            'no_whatsapp' => formatWhatsappNumber($data->ephone),
+            'password' => Hash::make($data->password),
+        ]);
+    }
+
+    public function ValidateEmailIsExists(string $email): bool|User
+    {
+        return !User::where('email', $email)->exists() ? false : true; //gak boleh insert email yang sudah ada sebelumnya
+    }
+
+    public function ValidateNoWhatsappIsExists(string $no_whatsapp): bool|User
+    {
+        return !User::where('no_whatsapp', $no_whatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }
 }

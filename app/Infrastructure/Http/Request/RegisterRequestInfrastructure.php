@@ -4,7 +4,7 @@ namespace App\Infrastructure\Http\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequestInfrastructure extends FormRequest
+class RegisterRequestInfrastructure extends FormRequest
 {
 
     public function authorize(): bool
@@ -16,8 +16,7 @@ class LoginRequestInfrastructure extends FormRequest
     {
         return [
             'nama_lengkap' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'no_whatsapp' => 'required|numeric|digits_between:1,13',
+            'ephone' => 'required|string',
             'password' => 'required|string',
         ];
     }
@@ -26,11 +25,7 @@ class LoginRequestInfrastructure extends FormRequest
     {
         return [
             'nama_lengkap.required' => 'Nama lengkap wajib di isi',
-            'email.required' => 'Email wajib di isi',
-            'email.unique' => 'Email sudah terdaftar',
-            'no_whatsapp.required' => 'Nomor WhatsApp wajib di isi',
-            'no_whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka',
-            'no_whatsapp.digits_between' => 'Nomor WhatsApp maksimal 13 digit',
+            'ephone.required' => 'Email atau Nomor WhatsApp wajib di isi',
             'password.required' => 'Password wajib di isi'
         ];
     }
