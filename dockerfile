@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     autoconf \
     pkg-config \
+    supervisor \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install gd pdo_mysql zip mbstring exif pcntl bcmath \
     && pecl install grpc swoole \
@@ -54,5 +55,15 @@ RUN php artisan config:cache \
 # Expose port 8085 for Octane server
 EXPOSE 8085
 
-# Start Laravel with Octane and Swoole
-CMD ["php", "artisan", "octane:start", "--server=swoole", "--host=0.0.0.0", "--port=8085"]
+# Create supervisor config folder
+RUN mkdir -p /etc/supervisor/conf.d
+
+# Copy supervisor config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Set entrypoint to run both services
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
