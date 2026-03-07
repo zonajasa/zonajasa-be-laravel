@@ -1,5 +1,7 @@
 #================= Docker Command Laravel and PHP Linux & Windows ================
 zj-docker-start:
+	docker compose -f docker-compose.yaml down
+	docker compose -f docker-compose.yaml build app
 	docker compose -f docker-compose.yaml up -d
 #stop docker zonajasa
 zj-docker-stop:
