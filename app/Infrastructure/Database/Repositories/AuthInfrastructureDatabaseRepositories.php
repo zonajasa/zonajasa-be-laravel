@@ -85,7 +85,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return Otp::where('email', $email)->first(); //email yang terenkripsi
     }
 
-    public function GenerateSession(string $ephone): array|user
+    public function GenerateSession(string $ephone): array|User
     {
         $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
         $data['user'] = User::where($field, $ephone)->first();
