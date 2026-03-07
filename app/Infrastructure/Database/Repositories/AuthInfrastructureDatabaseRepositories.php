@@ -61,7 +61,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         if (!filter_var($ephone, FILTER_VALIDATE_EMAIL)) {
             return Otp::create([
                 'code' => Crypt::encryptString($code_otp),
-                'no_whatsapp' => Crypt::encryptString($ephone),
+                'no_whatsapp' => Crypt::encryptString(formatWhatsappNumber($ephone)),
                 'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
                 'created_at' => now()->timezone(config('app.timezone')),
             ]);
