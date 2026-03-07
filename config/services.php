@@ -38,7 +38,7 @@ return [
     'waha' => [
         'api_key' => env('WAHA_API_KEY'),
         'accept' => env('WAHA_ACCEPT'),
-        'api_base_url' => env('CONTAINER_STATUS') === 'true' ? env('WAHA_BASE_URL') : env('WAHA_API_BASE_URL'),
+        'api_base_url' => env('CONTAINER_STATUS') == "yes" ? env('WAHA_BASE_URL') : env('WAHA_API_BASE_URL'),
     ],
 
 ];
