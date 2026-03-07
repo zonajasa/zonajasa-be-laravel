@@ -11,6 +11,9 @@ use App\Internal\Api\Auth\DTOs\AuthLoginDTOs;
 use App\Internal\Api\Auth\DTOs\AuthRegisterDTOs;
 use App\Internal\Api\Auth\DTOs\AuthVerifyOtpDTOs;
 use App\Internal\Api\Auth\Usecase\AuthUsecase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthHandler extends AuthConstant
@@ -39,5 +42,22 @@ class AuthHandler extends AuthConstant
         $validated = $registerRequestInfrastructure->validated();
         $dto_register = new AuthRegisterDTOs($validated['nama_lengkap'], $validated['ephone'], $validated['password']); //simpan object
         return $this->usecase->AuthServiceRegister($dto_register, static::MESSAGE_SUCCESS_REGISTER);
+    }
+
+    public function Logout(): JsonResponse
+    {
+        try {
+            // Revoke the current access token and associated refresh token for Passport
+            $logout = Auth::guard('api')->user()->token()->delete();
+            return OkRes(static::MESSAGE_SUCCESS_LOGOUT, $logout);
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function Profile(): JsonResponse
+    {
+        return OkRes(static::MESSAGE_SUCCESS_PROFILE, Auth::guard('api')->user()); //return user by session
     }
 }

@@ -11,4 +11,6 @@ class AuthConstant
     const MESSAGE_VERIFICATION_OTP_FAILED = 'Verifikasi OTP gagal,otp sudah kadaluarsa atau tidak ditemukan';
     const MESSAGE_SUCCESS_VERIFY_OTP = 'Berhasil verifikasi OTP silahkan masuk kedalam sistem';
     const MESSAGE_SUCCESS_REGISTER = 'Berhasil registrasi, silahkan verifikasi akun untuk masuk kedalam sistem';
+    const MESSAGE_SUCCESS_LOGOUT = 'Berhasil logout,silahkan kembali login';
+    const MESSAGE_SUCCESS_PROFILE = 'Berhasil mendapatkan data profile';
 }
