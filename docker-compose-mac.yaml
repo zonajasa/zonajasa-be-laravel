@@ -68,7 +68,7 @@ services:
 
   #Waha
   waha:
-    image: devlikeapro/waha:latest
+    image: devlikeapro/waha:arm
     restart: always
     ports:
       - "3000:3000"
