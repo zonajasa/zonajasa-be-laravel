@@ -2,20 +2,20 @@
     <div class="container-fluid container-xl d-flex justify-content-between align-items-center">
 
         <!-- Logo -->
-        <a href="{{ route('home') }}" class="logo d-flex align-items-center">
+        <a href="{{ route('landing.index') }}" class="logo d-flex align-items-center">
             <h1 class="sitename">Zona Jasa</h1>
         </a>
 
         <!-- Navigation -->
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="{{ route('home') }}#hero" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
-                <li><a href="{{ route('home') }}#about">Tentang</a></li>
-                <li><a href="{{ route('home') }}#features">Fitur</a></li>
-                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
-                <li><a href="{{ route('home') }}#team">Tim</a></li>
-                <li><a href="{{ route('home') }}#pricing">Harga</a></li>
-                <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <li><a href="{{ route('landing.index') }}#hero" class="{{ request()->routeIs('landing.index') ? 'active' : '' }}">landing.index</a></li>
+                <li><a href="{{ route('landing.index') }}#about">Tentang</a></li>
+                <li><a href="{{ route('landing.index') }}#features">Fitur</a></li>
+                <li><a href="{{ route('landing.index') }}#gallery">Galeri</a></li>
+                <li><a href="{{ route('landing.index') }}#team">Tim</a></li>
+                <li><a href="{{ route('landing.index') }}#pricing">Harga</a></li>
+                <li><a href="{{ route('landing.index') }}#contact">Kontak</a></li>
             </ul>
 
             <!-- Mobile Toggle -->
