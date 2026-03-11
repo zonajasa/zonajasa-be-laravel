@@ -5,7 +5,7 @@ namespace App\Internal\Api\Auth\Constant;
 class AuthConstant
 {
     const MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP = 'No whatsapp atau email dan password tidak terdaftar';
-    const MESSAGE_SUCCESS_LOGIN = 'Berhasil kirim otp cek email atau whatsapp anda';
+    const MESSAGE_SUCCESS_LOGIN = 'Successfully Login';
     const OTP_INVALID = 'OTP yang anda masukan salah';
     const MESSAGE_VERIFICATION_OTP_FAILED = 'Verifikasi OTP gagal,otp sudah kadaluarsa atau tidak ditemukan';
     const MESSAGE_SUCCESS_VERIFY_OTP = 'Berhasil verifikasi OTP silahkan masuk kedalam sistem';
