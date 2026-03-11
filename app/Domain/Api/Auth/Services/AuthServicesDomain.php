@@ -94,11 +94,11 @@ class AuthServicesDomain
 
             //validasi email atau no whatsapp sudah terdaftar sebelumnya
             if (filter_var($data->ephone, FILTER_VALIDATE_EMAIL) && $this->repository->ValidateEmailIsExists($data->ephone)) {
-                return ErrorRes('Email sudah terdaftar sebelumnya', 422);
+                return ErrorRes('Email sudah terdaftar, silahkan login atau daftar dengan Email baru.', 422);
             }
 
             if (!filter_var($data->ephone, FILTER_VALIDATE_EMAIL) && $this->repository->ValidateNoWhatsappIsExists(formatWhatsappNumber($data->ephone))) {
-                return ErrorRes('No whatsapp sudah terdaftar sebelumnya', 422);
+                return ErrorRes('No whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
             }
 
             //register user
