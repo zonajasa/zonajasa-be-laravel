@@ -6,6 +6,6 @@ class LandingHandler
 {
     public function index()
     {
-        return view('home');
+        return 'Laravel (12.x.x) (Laravel Components ^2.x), API Zonajasa';
     }
 }

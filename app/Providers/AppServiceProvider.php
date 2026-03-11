@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Domain\Api\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\Repositories\AuthInfrastructureDatabaseRepositories;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Passport::tokensExpireIn(now()->addMonth());
+        Passport::refreshTokensExpireIn(now()->addMonth());
+        Passport::personalAccessTokensExpireIn(now()->addMonth());
     }
 }
