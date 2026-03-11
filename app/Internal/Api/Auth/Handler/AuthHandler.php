@@ -27,7 +27,7 @@ class AuthHandler extends AuthConstant
         $validated = $loginRequestInfrastructure->validated();
         $dto_login = new AuthLoginDTOs($validated['ephone'], $validated['password']); //simpan object 
 
-        return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_ERROR_PASSWORD, static::MESSAGE_SUCCESS_LOGIN);
+        return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN);
     }
 
     public function VerifyOTP(VerifyOTPRequestInfrastructure $verifyOTPRequestInfrastructure): JsonResponse|array|User

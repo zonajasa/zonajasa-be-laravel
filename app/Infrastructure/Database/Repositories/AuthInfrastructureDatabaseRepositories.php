@@ -6,6 +6,7 @@ use App\Domain\Api\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\Eloquent\Otp;
 use App\Infrastructure\Database\Eloquent\User;
 use App\Internal\Api\Auth\DTOs\AuthRegisterDTOs;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -88,8 +89,20 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     public function GenerateSession(string $ephone): array|User
     {
         $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
+
         $data['user'] = User::where($field, $ephone)->first();
-        $data['token'] = $data['user']->createToken('zonajasa')->accessToken;
+
+        $tokenResult = $data['user']->createToken('zonajasa');
+        $tokenModel = $tokenResult->token;
+
+        $expires = Carbon::now(config('app.timezone'))->addMonth();
+
+        $tokenModel->expires_at = $expires;
+        $tokenModel->save();
+
+        $data['token'] = $tokenResult->accessToken;
+        $data['expired_at'] = $expires;
+
         return $data;
     }
 

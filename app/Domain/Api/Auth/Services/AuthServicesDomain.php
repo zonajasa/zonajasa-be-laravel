@@ -20,30 +20,34 @@ class AuthServicesDomain
         string $ephone,
         string $password,
         string $message_error_email_or_whatsapp,
-        string $message_error_password,
         string $message_success_login
     ): JsonResponse {
         try {
             //validate credential
             $user = $this->repository->ValidateEmailOrNoWhatsapp($ephone);
-            if (!$user) {
+            if (!$user || !$this->repository->ValidatePassword($password, $user->password)) {
                 return ErrorRes($message_error_email_or_whatsapp);
             }
 
-            if (!$this->repository->ValidatePassword($password, $user->password)) {
-                return ErrorRes($message_error_password);
-            }
+            // if (!$this->repository->ValidatePassword($password, $user->password)) {
+            //     return ErrorRes($message_error_password);
+            // }
 
-            //generate otp 6 digit
-            $otp = $this->repository->GenerateOTP($ephone, $user->nama_lengkap);
-            $submit_otp = $this->repository->SubmitOTPVerify($otp, $ephone);
+            //===============PROCEDURE INI GAK DIGUNAKAN =========================
+            // //generate otp 6 digit
+            // $otp = $this->repository->GenerateOTP($ephone, $user->nama_lengkap);
+            // $submit_otp = $this->repository->SubmitOTPVerify($otp, $ephone);
 
-            //return response after submit otp success of login
-            return OkRes($message_success_login, [
-                'ephone' => $submit_otp['no_whatsapp'] ? $submit_otp['no_whatsapp'] : $submit_otp['email'], //yang dikirim dari depan adalah no whatsapp atau email yang terenkripsi
-                'expire' => Carbon::parse($submit_otp['expired_at'])->timezone(config('app.timezone'))
-                    ->format('H:i:s')
-            ]);
+            // //return response after submit otp success of login
+            // return OkRes($message_success_login, [
+            //     'ephone' => $submit_otp['no_whatsapp'] ? $submit_otp['no_whatsapp'] : $submit_otp['email'], //yang dikirim dari depan adalah no whatsapp atau email yang terenkripsi
+            //     'expire' => Carbon::parse($submit_otp['expired_at'])->timezone(config('app.timezone'))
+            //         ->format('H:i:s')
+            // ]);
+
+            //generate session
+            $user = $this->repository->GenerateSession($ephone);
+            return OkRes($message_success_login, $user);
         } catch (\Exception $e) {
             Log::error('AuthServicesDomain Error: ' . $e->getMessage());
             return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
