@@ -51,7 +51,6 @@ zj-docker-laravel-optimize-all:
 
 #================= Docker Command Laravel and MAC ================
 zj-mac-docker-start:
-	docker compose -f docker-compose-mac.yaml up -d
 	docker compose -f docker-compose-mac.yaml down
 	docker compose -f docker-compose-mac.yaml build app
 	docker compose -f docker-compose-mac.yaml up -d
