@@ -30,6 +30,8 @@ zj-docker-rollback:
 zj-docker-refresh:
 	docker compose -f docker-compose.yaml exec app php artisan migrate:refresh
 	docker compose -f docker-compose.yaml exec app php artisan db:seed
+	docker compose -f docker-compose.yaml exec app php artisan passport:keys --force
+	docker compose -f docker-compose.yaml exec app php artisan passport:client --personal
 #exec run seeder
 zj-docker-seed:
 	docker compose -f docker-compose.yaml exec app php artisan db:seed
@@ -81,6 +83,8 @@ zj-mac-docker-rollback:
 zj-mac-docker-refresh:
 	docker compose -f docker-compose-mac.yaml exec app php artisan migrate:refresh
 	docker compose -f docker-compose-mac.yaml exec app php artisan db:seed
+	docker compose -f docker-compose-mac.yaml exec app php artisan passport:keys --force
+	docker compose -f docker-compose-mac.yaml exec app php artisan passport:client --personal
 #exec run seeder
 zj-mac-docker-seed:
 	docker compose -f docker-compose-mac.yaml exec app php artisan db:seed
