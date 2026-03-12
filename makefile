@@ -1,8 +1,8 @@
 #================= Docker Command Laravel and PHP Linux & Windows ================
 zj-docker-start:
-	docker compose -f docker-compose.yaml down
-	docker compose -f docker-compose.yaml build app
-	docker compose -f docker-compose.yaml up -d
+	# delegasikan logika platform/WAHA_IMAGE ke skrip terpisah supaya Makefile
+	# tetap sederhana dan bebas error syntax.
+	./compose-start.sh
 #stop docker zonajasa
 zj-docker-stop:
 	docker compose -f docker-compose.yaml down
@@ -50,59 +50,6 @@ zj-docker-laravel-optimize-all:
 	docker compose -f docker-compose.yaml exec app php artisan config:clear
 	docker compose -f docker-compose.yaml exec app php artisan route:clear
 	docker compose -f docker-compose.yaml exec app php artisan view:clear
-
-#================= Docker Command Laravel and MAC ================
-zj-mac-docker-start:
-	docker compose -f docker-compose-mac.yaml down
-	docker compose -f docker-compose-mac.yaml build app
-	docker compose -f docker-compose-mac.yaml up -d
-#stop docker zonajasa
-zj-mac-docker-stop:
-	docker compose -f docker-compose-mac.yaml down
-#list docker zonajasa
-zj-mac-docker-ps:
-	docker compose -f docker-compose-mac.yaml ps
-#list docker images
-zj-mac-docker-image:
-	docker image ls
-#restart docker zonajasa
-zj-mac-docker-restart:
-	docker compose -f docker-compose-mac.yaml restart
-#logs docker zonajasa
-zj-mac-docker-logs:
-	docker compose -f docker-compose-mac.yaml logs -f
-#build docker zonajasa
-zj-mac-docker-build:
-	docker compose -f docker-compose-mac.yaml build app
-zj-mac-docker-migrate:
-	docker compose -f docker-compose-mac.yaml exec app php artisan migrate
-	docker compose -f docker-compose-mac.yaml exec app php artisan db:seed
-zj-mac-docker-rollback:
-	docker compose -f docker-compose-mac.yaml exec app php artisan migrate:rollback
-#exec run migrate refresh
-zj-mac-docker-refresh:
-	docker compose -f docker-compose-mac.yaml exec app php artisan migrate:refresh
-	docker compose -f docker-compose-mac.yaml exec app php artisan db:seed
-	docker compose -f docker-compose-mac.yaml exec app php artisan passport:keys --force
-	docker compose -f docker-compose-mac.yaml exec app php artisan passport:client --personal
-#exec run seeder
-zj-mac-docker-seed:
-	docker compose -f docker-compose-mac.yaml exec app php artisan db:seed
-#exec app docker via composer install
-zj-mac-docker-composer-install:
-	docker compose -f docker-compose-mac.yaml exec app composer install
-zj-mac-docker-composer-update:
-	docker compose -f docker-compose-mac.yaml exec app composer update
-zj-mac-docker-php-m:
-	docker compose -f docker-compose-mac.yaml exec app php -m
-zj-mac-docker-dir-project:
-	docker exec -it zonajasa bash
-zj-mac-docker-laravel-optimize-all:
-	docker compose -f docker-compose-mac.yaml exec app php artisan optimize
-	docker compose -f docker-compose-mac.yaml exec app php artisan cache:clear
-	docker compose -f docker-compose-mac.yaml exec app php artisan config:clear
-	docker compose -f docker-compose-mac.yaml exec app php artisan route:clear
-	docker compose -f docker-compose-mac.yaml exec app php artisan view:clear
 
 #================= Laravel and PHP Command =================
 zj-start:

@@ -68,7 +68,10 @@ services:
 
   #Waha
   waha:
-    image: devlikeapro/waha:latest
+    # image tergantung arsitektur; atur melalui WAHA_IMAGE di environment
+    # misalnya WAHA_IMAGE=devlikeapro/waha:arm ketika host ARM
+    image: ${WAHA_IMAGE:-devlikeapro/waha:latest}
+    platform: ${PLATFORM:-linux/amd64}
     restart: always
     ports:
       - "3000:3000"
