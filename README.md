@@ -1,59 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ZonaJasa Back-end
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Repository for the ZonaJasa Laravel-based API and Dockerized development environment.
 
-## About Laravel
+## 🧩 Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ZonaJasa provides a RESTful API for managing services, users, authentication, and integration with external tools such as Waha and n8n. Core features include:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel 12 framework (PHP 8.2)
+- Passport authentication (personal access tokens)
+- Scheduled jobs and queue workers
+- OTP mailing and header tracking
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Getting Started with Docker
 
-## Learning Laravel
+The project includes a `docker-compose.yaml` file and helper scripts.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Prerequisites
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Docker & Docker Compose v2
+- Make (optional, but targets are provided)
+- `./platform.sh` detects host architecture (amd64/arm64)
 
-## Laravel Sponsors
+### Environment
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Copy `.env.example` to `.env` and adjust as needed. Key flags:
 
-### Premium Partners
+```ini
+BUILD=true          # build local image; false to pull from registry
+APP_URL=https://zonajasa.com
+DB_*               # database credentials (mysql service)
+WAHA_IMAGE=...      # optionally override image tag
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Commands
 
-## Contributing
+Use the included Makefile or run scripts directly.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```sh
+# build or pull and start (handles arch detection automatically)
+make zj-docker-start
 
-## Code of Conduct
+# stop and remove containers
+make zj-docker-stop
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# restart services
+make zj-docker-restart
 
-## Security Vulnerabilities
+# run artisan commands inside app container
+make zj-docker-migrate
+make zj-docker-refresh
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Custom scripts are available in `scripts/`:
 
-## License
+- `compose-start.sh` wraps `docker compose` with logic for `BUILD`, arch and profiles
+- `platform.sh` returns `linux/amd64` or `linux/arm64` depending on host
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Profiles allow switching between build and pull:
+
+- `rebuild` profile builds `app-build` service
+- `rerun` profile runs prebuilt `app-run` image
+
+## 📡 API Endpoints
+
+Base URL: `{{APP_URL}}/api/:version`
+
+| Method | Endpoint      | Description                |
+| ------ | ------------- | -------------------------- |
+| POST   | `/login`      | Obtain access token        |
+| POST   | `/register`   | User registration          |
+| GET    | `/verify-otp` | List users (auth required) |
+
+> Authentication is via Bearer token from Passport. Include
+> `Authorization: Bearer <token>`.
+
+## 🔧 Development Notes
+
+## Struktur Folder
+
+Proyek ini menggunakan **Domain-Driven Design (DDD)** dengan struktur folder berikut:
+
+```
+app/
+├── Console/                    # Artisan commands
+│   └── Commands/
+├── Domain/                     # Business logic & entities
+│   ├── Auth/                   # Auth domain
+├── Infrastructure/             # External integrations & persistence
+│   ├── Database/               # Database-related classes
+│   └── Http/                   # HTTP controllers, middleware, requests
+└── Internal/                   # Application services
+    ├── Auth/                   # Auth services
+```
+
+### Directory Descriptions
+
+| Folder                | Deskripsi                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| `app/Domain/`         | Entitas bisnis, value objects, interfaces, dan business logic murni tanpa dependency eksternal |
+| `app/Infrastructure/` | Implementasi kontrak domain, database models, HTTP controllers, middleware, dan form requests  |
+| `app/Internal/`       | Application services yang menggunakan domain logic dan infrastructure                          |
+| `bootstrap/`          | Framework bootstrapping dan cache configuration                                                |
+| `config/`             | Konfigurasi aplikasi (database, cache, mail, auth, dll)                                        |
+| `database/`           | Migrations, seeders, dan factories                                                             |
+| `public/`             | Entry point dan assets statis                                                                  |
+| `resources/`          | Blade templates, CSS, JavaScript, dan frontend assets                                          |
+| `routes/`             | Route definitions untuk web dan console                                                        |
+| `storage/`            | File uploads, cache, sessions, dan logs                                                        |
+| `tests/`              | Unit tests dan feature tests                                                                   |
+| `vendor/`             | Composer dependencies                                                                          |
+
+The codebase follows a **clean architecture** / hexagonal style:
+
+- **Domain layer** (`app/Domain`) contains business entities, value objects,
+  and interfaces (contracts) that express core rules independent of frameworks.
+- **Infrastructure layer** (`app/Infrastructure`) houses implementation details:
+  database repositories, HTTP clients, mailers, and any framework-specific
+  adapters.
+- **Application layer** (inside `app/Internal` or `app/Module`) orchestrates use
+  cases, request validation, and controllers; it depends on domain contracts but
+  not on concrete infrastructure.
+- Dependency inversion is maintained via interfaces and Laravel service
+  providers (`app/Providers`) to bind implementations.
+
+Other notes:
+
+- Migrations are in `database/migrations`; factories and seeders available.
+- Run `php artisan migrate --seed` within container (`make zj-docker-migrate`).
+- Background jobs: `php artisan queue:work` or `make zj-job-lorawan`.
+
+## 📦 Deployment
+
+- When `BUILD=false`, the `app-run` service expects an image tag `zonajasa/zonajasa-be-laravel:1.0` from your registry.
+- Ensure environment variables are set appropriately in production `.env`.
+
+## 📝 Contributing
+
+Feel free to open issues or PRs. Follow PSR‑12 coding style and include tests in `tests/Feature` or `tests/Unit`.
+
+## 📄 License
+
+Project code is MIT-licensed as per Laravel default.
