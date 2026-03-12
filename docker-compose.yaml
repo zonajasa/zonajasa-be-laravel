@@ -1,10 +1,11 @@
 services:
-  #app
-  app:
+  #app with build
+  app-build:
+    profiles: ["rebuild"]
     build:
       context: .
       dockerfile: dockerfile
-    container_name: zonajasa
+    container_name: zonajasa-rebuild
     restart: unless-stopped
     ports:
       - "8085:8085"
@@ -12,6 +13,21 @@ services:
       - mysql
     env_file:
       - .env
+    networks:
+      - laravel
+  
+  #app with pull from docker registry
+  app-run:
+    profiles: ["rerun"]
+    image: zonajasa/zonajasa-be-laravel:1.0
+    container_name: zonajasa-rerun
+    restart: unless-stopped
+    ports:
+      - 8085:8085
+    depends_on:
+      - mysql
+    volumes:
+      - zonajasa:/var/www/html
     networks:
       - laravel
 
@@ -55,7 +71,8 @@ services:
   #N8N
   n8n:
     image: docker.n8n.io/n8nio/n8n
-    restart: always
+    container_name: n8n
+    restart: unless-stopped
     ports:
       - "5678:5678"
     env_file:
@@ -71,8 +88,9 @@ services:
     # image tergantung arsitektur; atur melalui WAHA_IMAGE di environment
     # misalnya WAHA_IMAGE=devlikeapro/waha:arm ketika host ARM
     image: ${WAHA_IMAGE:-devlikeapro/waha:latest}
+    container_name: waha
     platform: ${PLATFORM:-linux/amd64}
-    restart: always
+    restart: unless-stopped
     ports:
       - "3000:3000"
     env_file:
@@ -85,6 +103,7 @@ services:
 
 
 volumes:
+  zonajasa:
   mysql:
   phpmyadmin:
   n8n:

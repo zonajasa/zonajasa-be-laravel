@@ -1,10 +1,11 @@
 #================= Docker Command Laravel and PHP Linux & Windows ================
 zj-docker-start:
-	# delegasikan logika platform/WAHA_IMAGE ke skrip terpisah supaya Makefile
+	# run shell compose start include detect arch sistem with pull image
 	# tetap sederhana dan bebas error syntax.
 	./compose-start.sh
 #stop docker zonajasa
 zj-docker-stop:
+	docker rm -f zonajasa-rebuild zonajasa-rerun n8n mysql phpmyadmin waha
 	docker compose -f docker-compose.yaml down
 #list docker zonajasa
 zj-docker-ps:
