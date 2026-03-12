@@ -21,36 +21,36 @@ zj-docker-logs:
 	docker compose -f docker-compose.yaml logs -f
 #build docker zonajasa
 zj-docker-build:
-	docker compose -f docker-compose.yaml build app
+	docker compose -f docker-compose.yaml build $(SERVICE)
 zj-docker-migrate:
-	docker compose -f docker-compose.yaml exec app php artisan migrate
-	docker compose -f docker-compose.yaml exec app php artisan db:seed
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan migrate
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan db:seed
 zj-docker-rollback:
-	docker compose -f docker-compose.yaml exec app php artisan migrate:rollback
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan migrate:rollback
 #exec run migrate refresh
 zj-docker-refresh:
-	docker compose -f docker-compose.yaml exec app php artisan migrate:refresh
-	docker compose -f docker-compose.yaml exec app php artisan db:seed
-	docker compose -f docker-compose.yaml exec app php artisan passport:keys --force
-	docker compose -f docker-compose.yaml exec app php artisan passport:client --personal
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan migrate:refresh
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan db:seed
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan passport:keys --force
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan passport:client --personal
 #exec run seeder
 zj-docker-seed:
-	docker compose -f docker-compose.yaml exec app php artisan db:seed
-#exec app docker via composer install
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan db:seed
+#exec service app docker via composer install
 zj-docker-composer-install:
-	docker compose -f docker-compose.yaml exec app composer install
+	docker compose -f docker-compose.yaml exec $(SERVICE) composer install
 zj-docker-composer-update:
-	docker compose -f docker-compose.yaml exec app composer update
+	docker compose -f docker-compose.yaml exec $(SERVICE) composer update
 zj-docker-php-m:
-	docker compose -f docker-compose.yaml exec app php -m
+	docker compose -f docker-compose.yaml exec $(SERVICE) php -m
 zj-docker-dir-project:
 	docker exec -it zonajasa bash
 zj-docker-laravel-optimize-all:
-	docker compose -f docker-compose.yaml exec app php artisan optimize
-	docker compose -f docker-compose.yaml exec app php artisan cache:clear
-	docker compose -f docker-compose.yaml exec app php artisan config:clear
-	docker compose -f docker-compose.yaml exec app php artisan route:clear
-	docker compose -f docker-compose.yaml exec app php artisan view:clear
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan optimize
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan cache:clear
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan config:clear
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan route:clear
+	docker compose -f docker-compose.yaml exec $(SERVICE) php artisan view:clear
 
 #================= Laravel and PHP Command =================
 zj-start:
