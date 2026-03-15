@@ -14,11 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->use([
             \Illuminate\Http\Middleware\HandleCors::class,
-            \App\Infrastructure\Http\Middleware\HeaderMiddleware::class
 
         ]);
         $middleware->alias([
-            'auth' => App\Infrastructure\Http\Middleware\AuthenticatedMiddleware::class
+            'auth' => App\Infrastructure\Http\Middleware\AuthenticatedMiddleware::class,
+            'header' => \App\Infrastructure\Http\Middleware\HeaderMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

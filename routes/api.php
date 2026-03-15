@@ -9,17 +9,19 @@ use Laravel\Passport\Token;
 #import auth routes
 
 Route::prefix('v1/user')->group(function () {
-    require base_path('app/Internal/Api/Auth/Routes/AuthRoutes.php');
+    Route::middleware('header')->group(function () {
+        require base_path('app/Internal/Api/Auth/Routes/AuthRoutes.php');
+    });
 
     //kalo true api debug nya jalan selain itu default nya hanya base api fitur
     if (config('app.debug') == true) {
         //debug API
-        Route::get('/user-session', function (Request $request) {
+        Route::get('session', function (Request $request) {
             return $request->user(); //get user session
         })->middleware('auth:api');
 
 
-        Route::post('/encrypt-decrypt', function (Request $request) {
+        Route::post('encrypt-decrypt', function (Request $request) {
             $data = $request->post();
             if (empty($data)) {
                 return ErrorRes('Data is required for encryption or decryption');
@@ -29,18 +31,39 @@ Route::prefix('v1/user')->group(function () {
                 return ErrorRes('Invalid type. Type must be either "encrypt" or "decrypt".');
             }
 
-            if ($data['type'] === 'encrypt') {
-                $data['data']['email'] = Crypt::encryptString($data['data']['email']);
-                $data['data']['no_whatsapp'] = Crypt::encryptString($data['data']['no_whatsapp']);
-            } else {
-                $data['data']['email'] = Crypt::decryptString($data['data']['email']);
-                $data['data']['no_whatsapp'] = Crypt::decryptString($data['data']['no_whatsapp']);
+            if (empty($data['data'])) {
+                return ErrorRes('Masukan data email dan no whatsapp');
             }
 
-            return OkRes('Data encrypted successfully', $data);
+            switch ($data['type']) {
+                case 'encrypt':
+                    if (!empty($data['data']['email'])) {
+                        $data['data']['email'] = Crypt::encryptString($data['data']['email']);
+                    }
+
+                    if (!empty($data['data']['no_whatsapp'])) {
+                        $data['data']['no_whatsapp'] = Crypt::encryptString($data['data']['no_whatsapp']);
+                    }
+                    return OkRes('Encrypted successfully', [
+                        'email' =>  !empty($data['data']['email']) ? $data['data']['email'] : null,
+                        'no_whatsapp' =>  !empty($data['data']['no_whatsapp']) ? $data['data']['no_whatsapp'] : null
+                    ]);
+                default:
+                    if (!empty($data['data']['email'])) {
+                        $data['data']['email'] = Crypt::decryptString($data['data']['email']);
+                    }
+
+                    if (!empty($data['data']['no_whatsapp'])) {
+                        $data['data']['no_whatsapp'] = Crypt::decryptString($data['data']['no_whatsapp']);
+                    }
+                    return OkRes('Decrypted successfully', [
+                        'email' =>  !empty($data['data']['email']) ? $data['data']['email'] : null,
+                        'no_whatsapp' =>  !empty($data['data']['no_whatsapp']) ? $data['data']['no_whatsapp'] : null
+                    ]);
+            }
         });
 
-        Route::get('/test-user-token', function (Request $request) {
+        Route::post('token', function (Request $request) {
 
             //validation request
             $req = $request->post('user_id');
