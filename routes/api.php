@@ -2,6 +2,7 @@
 
 use App\Infrastructure\Database\Eloquent\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Token;
@@ -17,7 +18,7 @@ Route::prefix('v1/user')->group(function () {
     if (config('app.debug') == true) {
         //debug API
         Route::get('session', function (Request $request) {
-            return $request->user(); //get user session
+            return Auth::guard('api')->user();
         })->middleware('auth:api');
 
 
