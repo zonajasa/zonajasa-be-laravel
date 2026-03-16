@@ -21,7 +21,7 @@ class LoginRequestInfrastructure
     {
         return [
             'no_whatsapp.numeric' => 'No whatsapp harus angka',
-            'no_whatsapp.digits_between' => 'No whatsapp wajib 10 hingga 12 digit',
+            'no_whatsapp.digits_between' => 'No whatsapp wajib 10 hingga 14 digit',
             'no_whatsapp.required' => 'Nomor WhatsApp wajib di isi',
             'password.required' => 'Password wajib di isi',
             'password.min' => 'Password minimal 8 karakter'
