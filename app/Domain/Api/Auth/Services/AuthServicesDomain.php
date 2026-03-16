@@ -66,7 +66,7 @@ class AuthServicesDomain
     ): JsonResponse|array|User {
         try {
 
-            //cek yang dia kirim apakah email atau no whatsapp
+            //cek yang dia kirim apakah no whatsapp terenkripsi is exists
             $no_whatsapp = $this->repository->FindOTPByPhone($no_whatsapp);
             // $email = $this->repository->FindOTPByEmailAddress($ephone);
 
@@ -76,7 +76,7 @@ class AuthServicesDomain
                 if (Crypt::decryptString($otp_by_phone) != $otp) {
                     return ErrorRes($message_otp_invalid, 422);
                 }
-                $generate_session_by_no_whatsapp = $this->repository->GenerateSession(Crypt::decryptString($no_whatsapp->no_whatsapp));
+                $generate_session_by_no_whatsapp = $this->repository->GenerateSession(Crypt::decryptString($no_whatsapp->no_whatsapp)); //decrypt no whatsapp agar dapat dicari keberadaan data di tbl user lalu generate session user by dari no whatsapp nya
                 return OkRes($message_success_verify_otp, $generate_session_by_no_whatsapp);
             }
             //========================= procedure di bawah ini tidak digunakan ==========================

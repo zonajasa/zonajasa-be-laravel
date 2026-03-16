@@ -74,7 +74,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         // ]);
 
         return Otp::create([
-            'code' => Crypt::encryptString($otp),
+            'code' => Crypt::encryptString($otp), //encrypt otp
             'no_whatsapp' => Crypt::encryptString(formatWhatsappNumber($no_whatsapp)),
             'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
             'created_at' => now()->timezone(config('app.timezone')),

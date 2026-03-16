@@ -35,10 +35,15 @@ class AuthHandler extends AuthConstant
         return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN, static::MESSAGE_VERIFY_ACCOUNT);
     }
 
-    public function VerifyOTP(VerifyOTPRequestInfrastructure $verifyOTPRequestInfrastructure): JsonResponse|array|User
+    public function VerifyOTP(Request $request, VerifyOTPRequestInfrastructure $validation): JsonResponse|array|User
     {
-        $validated = $verifyOTPRequestInfrastructure->validated();
-        $dto_verify_otp = new AuthVerifyOtpDTOs($validated['otp'], $validated['ephone']); //simpan object
+        $validated = $validation->rules($request);
+
+        if ($validated->fails()) {
+            return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+        }
+
+        $dto_verify_otp = new AuthVerifyOtpDTOs($request->otp, $request->no_whatsapp); //simpan object
         return $this->usecase->AuthServiceVerifyOTP($dto_verify_otp, static::OTP_INVALID, static::MESSAGE_VERIFICATION_OTP_FAILED, static::MESSAGE_SUCCESS_VERIFY_OTP);
     }
 

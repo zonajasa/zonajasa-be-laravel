@@ -17,7 +17,13 @@ class AuthUsecase
 
     public function AuthServiceLogin(AuthLoginDTOs $auth_dto_login, string $message_error_email_or_whatsapp, string $message_success_login, string $message_verify_account): JsonResponse
     {
-        return $this->service->AuthRepositoryLogin(formatWhatsappNumber($auth_dto_login->no_whatsapp), $auth_dto_login->password, $message_error_email_or_whatsapp, $message_success_login, $message_verify_account);
+        return $this->service->AuthRepositoryLogin(
+            formatWhatsappNumber($auth_dto_login->no_whatsapp),
+            $auth_dto_login->password,
+            $message_error_email_or_whatsapp,
+            $message_success_login,
+            $message_verify_account
+        );
     }
 
     public function AuthServiceVerifyOTP(
@@ -26,7 +32,13 @@ class AuthUsecase
         string $message_verification_otp_failed,
         string $message_success_verify_otp
     ): JsonResponse|array|User {
-        return $this->service->AuthRepositoryVerifyOTP($auth_dto_verify_otp->otp, $auth_dto_verify_otp->ephone, $message_otp_invalid, $message_verification_otp_failed, $message_success_verify_otp);
+        return $this->service->AuthRepositoryVerifyOTP(
+            $auth_dto_verify_otp->otp,
+            $auth_dto_verify_otp->no_whatsapp,
+            $message_otp_invalid,
+            $message_verification_otp_failed,
+            $message_success_verify_otp
+        );
     }
 
     public function AuthServiceRegister(AuthRegisterDTOs $auth_dto_register, string $message_success_register)

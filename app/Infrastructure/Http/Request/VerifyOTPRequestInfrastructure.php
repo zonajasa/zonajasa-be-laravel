@@ -2,30 +2,27 @@
 
 namespace App\Infrastructure\Http\Request;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidationValidator;
 
-class VerifyOTPRequestInfrastructure extends FormRequest
+
+class VerifyOTPRequestInfrastructure
 {
 
-    public function authorize(): bool
+    public function rules(Request $request): ValidationValidator
     {
-        return true;
-    }
-
-    public function rules(): array
-    {
-        return [
-            // use digits_between to validate the number of digits instead of max value
-            'otp' => 'required|string', //request otp yang akan divalidasi
-            'ephone' => 'required|string', //yang dikirim dari depan adalah no whatsapp atau email yang terenkripsi
-        ];
+        return Validator::make($request->all(), [
+            'otp' => 'required|numeric|digits:6',
+            'no_whatsapp' => 'required|string',
+        ], $this->messages());
     }
 
     public function messages(): array
     {
         return [
-            'otp.required' => 'OTP wajib di isi',
-            'ephone.required' => 'Nomor WhatsApp wajib di isi'
+            'required' => ':attribute jangan di kosongkan',
+            'digits' => ':attribute minimal 6 digit'
         ];
     }
 }
