@@ -20,7 +20,8 @@ class AuthServicesDomain
         string $no_whatsapp, //sudah di format dari usecase login no whatsapp nya jadi +62 
         string $password,
         string $message_error_email_or_whatsapp,
-        string $message_success_login
+        string $message_success_login,
+        string $message_verify_account
     ): JsonResponse {
         try {
             //validate credential
@@ -29,6 +30,13 @@ class AuthServicesDomain
                 return ErrorRes($message_error_email_or_whatsapp);
             }
 
+            //wajib account nya terverifikasi agar dapat login di sistem
+            if ($user->status == 'Y') {
+                $user = $this->repository->GenerateSession($no_whatsapp);
+                return OkRes($message_success_login, $user);
+            }
+
+            return ErrorRes($message_verify_account);
             //===============PROCEDURE INI GAK DIGUNAKAN =========================
             // //generate otp 6 digit
             // $otp = $this->repository->GenerateOTP($ephone, $user->nama_lengkap);
@@ -42,8 +50,7 @@ class AuthServicesDomain
             // ]);
 
             //generate session
-            $user = $this->repository->GenerateSession($no_whatsapp);
-            return OkRes($message_success_login, $user);
+
         } catch (\Exception $e) {
             Log::error('AuthServicesDomain Error: ' . $e->getMessage());
             return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);

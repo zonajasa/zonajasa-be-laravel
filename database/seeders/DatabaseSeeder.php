@@ -43,7 +43,8 @@ class DatabaseSeeder extends Seeder
             'no_whatsapp' => '6281804228935',
             'password' => Hash::make('12345678'),
             'role_id' => 1,
-            'created_at' => now()->timezone(config('app.timezone'))
+            'created_at' => now()->timezone(config('app.timezone')),
+            'status' => 'Y'
         ]);
 
         DB::table('headers')->insert([

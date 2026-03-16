@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('no_whatsapp')->unique()->nullable();
             $table->string('password');
             $table->foreignId('role_id')->references('id')->on('roles');
+            $table->enum('status', ['N', 'Y'])->default('N');
             $table->rememberToken();
             $table->timestamps();
         });

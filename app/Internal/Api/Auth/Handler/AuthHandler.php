@@ -32,7 +32,7 @@ class AuthHandler extends AuthConstant
 
         $dto_login = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
 
-        return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN);
+        return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN, static::MESSAGE_VERIFY_ACCOUNT);
     }
 
     public function VerifyOTP(VerifyOTPRequestInfrastructure $verifyOTPRequestInfrastructure): JsonResponse|array|User

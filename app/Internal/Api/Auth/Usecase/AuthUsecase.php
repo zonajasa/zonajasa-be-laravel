@@ -15,9 +15,9 @@ class AuthUsecase
         private AuthServicesDomain $service
     ) {}
 
-    public function AuthServiceLogin(AuthLoginDTOs $auth_dto_login, string $message_error_email_or_whatsapp, string $message_success_login): JsonResponse
+    public function AuthServiceLogin(AuthLoginDTOs $auth_dto_login, string $message_error_email_or_whatsapp, string $message_success_login, string $message_verify_account): JsonResponse
     {
-        return $this->service->AuthRepositoryLogin(formatWhatsappNumber($auth_dto_login->no_whatsapp), $auth_dto_login->password, $message_error_email_or_whatsapp, $message_success_login);
+        return $this->service->AuthRepositoryLogin(formatWhatsappNumber($auth_dto_login->no_whatsapp), $auth_dto_login->password, $message_error_email_or_whatsapp, $message_success_login, $message_verify_account);
     }
 
     public function AuthServiceVerifyOTP(
