@@ -2,31 +2,30 @@
 
 namespace App\Infrastructure\Http\Request;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidationValidator;
 
-class RegisterRequestInfrastructure extends FormRequest
+
+class RegisterRequestInfrastructure
 {
 
-    public function authorize(): bool
+    public function rules(Request $request): ValidationValidator
     {
-        return true;
-    }
-
-    public function rules(): array
-    {
-        return [
-            'nama_lengkap' => 'required|string',
-            'ephone' => 'required|string',
-            'password' => 'required|string',
-        ];
+        return Validator::make($request->all(), [
+            'nama_lengkap' => 'required|string|min:8',
+            'no_whatsapp' => 'required|numeric|digits_between:10,12',
+            'password' => 'required|string|min:8'
+        ], $this->messages());
     }
 
     public function messages(): array
     {
         return [
-            'nama_lengkap.required' => 'Nama lengkap wajib di isi',
-            'ephone.required' => 'Email atau Nomor WhatsApp wajib di isi',
-            'password.required' => 'Password wajib di isi'
+            'no_whatsapp.numeric' => 'No whatsapp harus angka',
+            'no_whatsapp.digits_between' => 'No whatsapp wajib 10 hingga 12 digit',
+            'min' => ':attribute minimal 8 karaketer',
+            'required' => ':attribute jangan di kosongkan'
         ];
     }
 }

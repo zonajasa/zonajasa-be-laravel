@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainInterface
 {
-    public function ValidateEmailOrNoWhatsapp(string $ephone): ?User
+    public function ValidateNoWhatsapp(int $no_whatsapp): ?User
     {
-        $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
-        return User::where($field, $ephone)->first();
+        // $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
+        // return User::where($field, $ephone)->first();
+        return User::where('no_whatsapp', $no_whatsapp)->first();
     }
 
     public function ValidatePassword(string $password, string $hash_password): bool
@@ -25,7 +26,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return !Hash::check($password, $hash_password) ? false : true;
     }
 
-    public function OTPSendRequestByWhatsapp(int $code_otp, int $no_whatsapp, string $full_name): void
+    public function OTPSendRequestByWhatsapp(int $otp, int $no_whatsapp, string $full_name): void
     {
         //send api whatsapp
         Http::withHeaders([
@@ -33,7 +34,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'Accept' => config('services.waha.accept')
         ])->post(config('services.waha.api_base_url') . "/api/sendText", [
             "chatId" => $no_whatsapp . "@c.us",
-            "text" => "*{$code_otp} Kode OTP Anda {$full_name}*\n\n"
+            "text" => "*{$otp} Kode OTP Anda {$full_name}*\n\n"
                 . "Gunakan kode ini untuk verifikasi akun Anda.\n"
                 . "Jangan bagikan kode ini kepada siapa pun.\n"
                 . "Kode berlaku selama *1 menit*.",
@@ -41,37 +42,40 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         ]);
     }
 
-    public function OTPSendRequestByEmail(int $code_otp, string $email, string $full_name): void
-    {
-        //send otp by email via smtp
-        Mail::to($email)->send(new \App\Mail\OtpMail($code_otp, $full_name));
-    }
+    // public function OTPSendRequestByEmail(int $code_otp, string $email, string $full_name): void
+    // {
+    //     //send otp by email via smtp
+    //     Mail::to($email)->send(new \App\Mail\OtpMail($code_otp, $full_name));
+    // }
 
-    public function GenerateOTP(string $ephone, string $full_name): int
+    public function GenerateOTP(int $no_whatsapp, string $full_name): int
     {
         $otp = rand(100000, 999999);
-        filter_var($ephone, FILTER_VALIDATE_EMAIL)
-            ? $this->OTPSendRequestByEmail($otp, $ephone, $full_name) :
-            $this->OTPSendRequestByWhatsapp($otp, $ephone, $full_name);
+        // filter_var($no_whatsapp, FILTER_VALIDATE_EMAIL)
+        //     ? $this->OTPSendRequestByEmail($otp, $no_whatsapp, $full_name) :
+        //     $this->OTPSendRequestByWhatsapp($otp, $no_whatsapp, $full_name);
+        $this->OTPSendRequestByWhatsapp($otp, $no_whatsapp, $full_name);
         return $otp;
     }
 
-    public function SubmitOTPVerify(int $code_otp, string $ephone): Otp
+    public function SubmitOTPVerify(int $otp, string $no_whatsapp): Otp
     {
 
-        if (!filter_var($ephone, FILTER_VALIDATE_EMAIL)) {
-            return Otp::create([
-                'code' => Crypt::encryptString($code_otp),
-                'no_whatsapp' => Crypt::encryptString(formatWhatsappNumber($ephone)),
-                'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
-                'created_at' => now()->timezone(config('app.timezone')),
-            ]);
-        }
+        //======================= procedur dibawah ini gak dipake ===========================
+        // if (!filter_var($ephone, FILTER_VALIDATE_EMAIL)) {
+        // }
 
-        //default nya email kalo bukan whatsapp
+        // //default nya email kalo bukan whatsapp
+        // return Otp::create([
+        //     'code' => Crypt::encryptString($code_otp),
+        //     'email' => Crypt::encryptString($ephone),
+        //     'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
+        //     'created_at' => now()->timezone(config('app.timezone')),
+        // ]);
+
         return Otp::create([
-            'code' => Crypt::encryptString($code_otp),
-            'email' => Crypt::encryptString($ephone),
+            'code' => Crypt::encryptString($otp),
+            'no_whatsapp' => Crypt::encryptString(formatWhatsappNumber($no_whatsapp)),
             'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
@@ -81,10 +85,10 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return Otp::where('no_whatsapp', $phone)->first(); //wa yang terenkripsi
     }
-    public function FindOTPByEmailAddress(string $email): ?Otp
-    {
-        return Otp::where('email', $email)->first(); //email yang terenkripsi
-    }
+    // public function FindOTPByEmailAddress(string $email): ?Otp
+    // {
+    //     return Otp::where('email', $email)->first(); //email yang terenkripsi
+    // }
 
     public function GenerateSession(string $no_whatsapp): array|User
     {
@@ -109,28 +113,29 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     public function UserRegister(AuthRegisterDTOs $data): User
     {
 
-        if (filter_var($data->ephone, FILTER_VALIDATE_EMAIL)):
-            return User::create([
-                'nama_lengkap' => $data->nama_lengkap,
-                'email' => $data->ephone,
-                'password' => Hash::make($data->password),
-            ]);
-        endif;
+        // if (filter_var($data->ephone, FILTER_VALIDATE_EMAIL)):
+        //     return User::create([
+        //         'nama_lengkap' => $data->nama_lengkap,
+        //         'email' => $data->ephone,
+        //         'password' => Hash::make($data->password),
+        //     ]);
+        // endif;
 
         //default nya whatssapp
         return User::create([
             'nama_lengkap' => $data->nama_lengkap,
-            'no_whatsapp' => formatWhatsappNumber($data->ephone),
+            'no_whatsapp' => formatWhatsappNumber($data->no_whatsapp),
             'password' => Hash::make($data->password),
+            'role_id' => 1 //default role sebagai pencari jasa
         ]);
     }
 
-    public function ValidateEmailIsExists(string $email): bool|User
-    {
-        return !User::where('email', $email)->exists() ? false : true; //gak boleh insert email yang sudah ada sebelumnya
-    }
+    // public function ValidateEmailIsExists(string $email): bool|User
+    // {
+    //     return !User::where('email', $email)->exists() ? false : true; //gak boleh insert email yang sudah ada sebelumnya
+    // }
 
-    public function ValidateNoWhatsappIsExists(string $no_whatsapp): bool|User
+    public function ValidateNoWhatsappIsExists(int $no_whatsapp): bool|User
     {
         return !User::where('no_whatsapp', $no_whatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }

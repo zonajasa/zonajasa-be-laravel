@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('no_whatsapp')->nullable()->unique();
-            $table->string('email')->nullable()->unique();
             $table->time('expired_at');
             $table->timestamps();
         });

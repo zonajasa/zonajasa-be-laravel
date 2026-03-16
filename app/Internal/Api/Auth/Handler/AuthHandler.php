@@ -42,10 +42,16 @@ class AuthHandler extends AuthConstant
         return $this->usecase->AuthServiceVerifyOTP($dto_verify_otp, static::OTP_INVALID, static::MESSAGE_VERIFICATION_OTP_FAILED, static::MESSAGE_SUCCESS_VERIFY_OTP);
     }
 
-    public function Register(RegisterRequestInfrastructure $registerRequestInfrastructure)
+    public function Register(Request $request, RegisterRequestInfrastructure $validation)
     {
-        $validated = $registerRequestInfrastructure->validated();
-        $dto_register = new AuthRegisterDTOs($validated['nama_lengkap'], $validated['ephone'], $validated['password']); //simpan object
+        $validated = $validation->rules($request);
+
+        if ($validated->fails()) {
+            return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+        }
+
+        //static request(menentukan request yang akan di kirim)
+        $dto_register = new AuthRegisterDTOs($request->nama_lengkap, $request->no_whatsapp, $request->password); //simpan object
         return $this->usecase->AuthServiceRegister($dto_register, static::MESSAGE_SUCCESS_REGISTER);
     }
 

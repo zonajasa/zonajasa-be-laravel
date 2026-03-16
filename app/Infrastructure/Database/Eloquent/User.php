@@ -22,7 +22,6 @@ class User extends Authenticatable implements OAuthenticatable
      */
     protected $fillable = [
         'nama_lengkap',
-        'email',
         'no_whatsapp',
         'password',
         'role_id',
