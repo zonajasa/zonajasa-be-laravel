@@ -32,7 +32,12 @@ class AuthHandler extends AuthConstant
 
         $dto_login = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
 
-        return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN, static::MESSAGE_VERIFY_ACCOUNT);
+        return $this->usecase->AuthServiceLogin(
+            $dto_login,
+            static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP,
+            static::MESSAGE_SUCCESS_LOGIN,
+            static::MESSAGE_VERIFY_ACCOUNT
+        );
     }
 
     public function VerifyOTP(Request $request, VerifyOTPRequestInfrastructure $validation): JsonResponse|array|User
@@ -44,7 +49,12 @@ class AuthHandler extends AuthConstant
         }
 
         $dto_verify_otp = new AuthVerifyOtpDTOs($request->otp, $request->no_whatsapp); //simpan object
-        return $this->usecase->AuthServiceVerifyOTP($dto_verify_otp, static::OTP_INVALID, static::MESSAGE_VERIFICATION_OTP_FAILED, static::MESSAGE_SUCCESS_VERIFY_OTP);
+        return $this->usecase->AuthServiceVerifyOTP(
+            $dto_verify_otp,
+            static::OTP_INVALID,
+            static::MESSAGE_VERIFICATION_OTP_FAILED,
+            static::MESSAGE_SUCCESS_VERIFY_OTP
+        );
     }
 
     public function Register(Request $request, RegisterRequestInfrastructure $validation)
