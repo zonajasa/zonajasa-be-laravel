@@ -22,10 +22,15 @@ class AuthHandler extends AuthConstant
         private AuthUsecase $usecase
     ) {}
 
-    public function Login(LoginRequestInfrastructure $loginRequestInfrastructure): JsonResponse
+    public function Login(Request $request, LoginRequestInfrastructure $validation): JsonResponse
     {
-        $validated = $loginRequestInfrastructure->validated();
-        $dto_login = new AuthLoginDTOs($validated['ephone'], $validated['password']); //simpan object 
+        $validated = $validation->rules($request);
+
+        if ($validated->fails()) {
+            return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+        }
+
+        $dto_login = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
 
         return $this->usecase->AuthServiceLogin($dto_login, static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP, static::MESSAGE_SUCCESS_LOGIN);
     }

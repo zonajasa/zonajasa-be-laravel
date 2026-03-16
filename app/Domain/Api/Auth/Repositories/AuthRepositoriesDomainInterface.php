@@ -20,6 +20,6 @@ interface AuthRepositoriesDomainInterface
     //verify otp
     public function FindOTPByPhone(string $phone): ?Otp;
     public function FindOTPByEmailAddress(string $email): ?Otp;
-    public function GenerateSession(string $ephone): array|User;
+    public function GenerateSession(string $no_whatsapp): array|User;
     public function UserRegister(AuthRegisterDTOs $data): User;
 }

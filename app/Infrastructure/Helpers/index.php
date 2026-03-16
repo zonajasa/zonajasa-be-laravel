@@ -75,3 +75,18 @@ if (!function_exists('ErrorRes')) {
         return JsonBuilder::ErrorRes($message, $status);
     }
 }
+
+if (!function_exists('CustomError')) {
+    /**
+     * Format WhatsApp number from 08xx to 628xx
+     * 
+     * @param $validator
+     * @param string $message
+     * @param int $status
+     * @return JsonResponse
+     */
+    function CustomError($validator, string $message, int $status = 422): JsonResponse
+    {
+        return JsonBuilder::CustomError($validator, $message, $status);
+    }
+}

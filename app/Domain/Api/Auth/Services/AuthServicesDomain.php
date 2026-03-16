@@ -17,14 +17,14 @@ class AuthServicesDomain
     ) {}
 
     public function AuthRepositoryLogin(
-        string $ephone,
+        string $no_whatsapp,
         string $password,
         string $message_error_email_or_whatsapp,
         string $message_success_login
     ): JsonResponse {
         try {
             //validate credential
-            $user = $this->repository->ValidateEmailOrNoWhatsapp($ephone);
+            $user = $this->repository->ValidateEmailOrNoWhatsapp($no_whatsapp);
             if (!$user || !$this->repository->ValidatePassword($password, $user->password)) {
                 return ErrorRes($message_error_email_or_whatsapp);
             }
@@ -46,7 +46,7 @@ class AuthServicesDomain
             // ]);
 
             //generate session
-            $user = $this->repository->GenerateSession($ephone);
+            $user = $this->repository->GenerateSession($no_whatsapp);
             return OkRes($message_success_login, $user);
         } catch (\Exception $e) {
             Log::error('AuthServicesDomain Error: ' . $e->getMessage());

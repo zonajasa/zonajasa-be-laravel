@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Infrastructure\Database\Eloquent\Role;
 use App\Infrastructure\Database\Eloquent\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,18 +20,37 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        Role::insert([
+            [
+                'name' => 'Pencari Jasa',
+                'description' => 'role ini untuk pencari jasa',
+                'created_at' => now()->timezone(config('app.timezone'))
+            ],
+            [
+                'name' => 'Pemilik Jasa',
+                'description' => 'role ini untuk pemilik jasa',
+                'created_at' => now()->timezone(config('app.timezone'))
+            ],
+            [
+                'name' => 'Admin',
+                'description' => 'role ini untuk admin zonajasa',
+                'created_at' => now()->timezone(config('app.timezone'))
+            ]
+        ]);
+
         User::create([
             'nama_lengkap' => 'Test User',
-            'email' => 'muhdevapp@gmail.com',
             'no_whatsapp' => '6281804228935',
-            'password' => Hash::make('12345'),
+            'password' => Hash::make('12345678'),
+            'roles' => 1,
+            'created_at' => now()->timezone(config('app.timezone'))
         ]);
 
         DB::table('headers')->insert([
             'platform' => 'mobile',
             'version' => '1',
             'client_key' => Str::random(12),
-            'created_at' => now()
+            'created_at' => now()->timezone(config('app.timezone'))
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',

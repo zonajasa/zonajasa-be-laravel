@@ -86,11 +86,11 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return Otp::where('email', $email)->first(); //email yang terenkripsi
     }
 
-    public function GenerateSession(string $ephone): array|User
+    public function GenerateSession(string $no_whatsapp): array|User
     {
-        $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
+        // $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
 
-        $data['user'] = User::where($field, $ephone)->first();
+        $data['user'] = User::where('no_whatsapp', $no_whatsapp)->first();
 
         $tokenResult = $data['user']->createToken('zonajasa');
         $tokenModel = $tokenResult->token;
@@ -101,7 +101,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         $tokenModel->save();
 
         $data['token'] = $tokenResult->accessToken;
-        $data['expired_at'] = $expires;
+        $data['expired_at'] = Carbon::parse($expires)->format('Y-m-d H:i:s');
 
         return $data;
     }
