@@ -12,7 +12,7 @@ class LoginRequestInfrastructure
     public function rules(Request $request): ValidationValidator
     {
         return Validator::make($request->all(), [
-            'no_whatsapp' => 'required|numeric|digits_between:10,12',
+            'no_whatsapp' => 'required|numeric|digits_between:10,14',
             'password' => 'required|string|min:8'
         ], $this->messages());
     }
