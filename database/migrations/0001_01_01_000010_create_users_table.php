@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->string('no_whatsapp')->unique()->nullable();
             $table->string('password');
-            $table->foreignId('roles')->references('id')->on('roles');
+            $table->foreignId('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
         });

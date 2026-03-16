@@ -4,6 +4,7 @@ namespace App\Infrastructure\Database\Eloquent;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\Contracts\OAuthenticatable;
@@ -24,7 +25,7 @@ class User extends Authenticatable implements OAuthenticatable
         'email',
         'no_whatsapp',
         'password',
-        'role',
+        'role_id',
         'created_at'
     ];
 
@@ -36,7 +37,8 @@ class User extends Authenticatable implements OAuthenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'updated_at'
+        'updated_at',
+        'role_id'
     ];
 
     /**
@@ -52,5 +54,10 @@ class User extends Authenticatable implements OAuthenticatable
             'updated_at' => 'datetime:Y-m-d H:i:s',
             'password' => 'hashed',
         ];
+    }
+
+    public function role(): HasOne
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }

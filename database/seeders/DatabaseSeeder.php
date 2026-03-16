@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'nama_lengkap' => 'Test User',
             'no_whatsapp' => '6281804228935',
             'password' => Hash::make('12345678'),
-            'roles' => 1,
+            'role_id' => 1,
             'created_at' => now()->timezone(config('app.timezone'))
         ]);
 

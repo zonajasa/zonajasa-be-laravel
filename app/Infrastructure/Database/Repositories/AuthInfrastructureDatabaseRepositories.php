@@ -90,7 +90,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         // $field = filter_var($ephone, FILTER_VALIDATE_EMAIL) ? 'email' : 'no_whatsapp';
 
-        $data['user'] = User::where('no_whatsapp', $no_whatsapp)->first();
+        $data['user'] = User::where('no_whatsapp', $no_whatsapp)->with('role')->first();
 
         $tokenResult = $data['user']->createToken('zonajasa');
         $tokenModel = $tokenResult->token;
