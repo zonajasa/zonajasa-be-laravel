@@ -123,4 +123,15 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Whatsapp gateway mode configuration
+    |--------------------------------------------------------------------------
+    |
+    |this configuration is used to determine which whatsapp gateway will be used in the application, if the value is "waha" then the application will use waha as whatsapp gateway, if the value is "fonte" then the application will use fonte as whatsapp gateway, if the value is empty or null then the application will use waha as default whatsapp gateway.
+    |
+    */
+
+    'whatsapp_gateway_mode' => env('WHATSAPP_GATEWAY_MODE', 'waha'), //kalo kosong default nya waha (berlaku untuk yang official whatsapp)
 ];

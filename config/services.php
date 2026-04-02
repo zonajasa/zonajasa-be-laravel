@@ -41,4 +41,9 @@ return [
         'api_base_url' => env('CONTAINER_STATUS') == "yes" ? env('WAHA_BASE_URL') : env('WAHA_API_BASE_URL'),
     ],
 
+    'fonte' => [
+        'api_base_url' => env('FONTE_API_BASE_URL'),
+        'device_token' => env('FONTE_DEVICE_TOKEN'),
+    ]
+
 ];

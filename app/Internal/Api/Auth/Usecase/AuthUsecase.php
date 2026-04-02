@@ -21,6 +21,7 @@ class AuthUsecase
         string $message_success_login,
         string $message_verify_account
     ): JsonResponse {
+        //interact with domain: login auth
         return $this->service->AuthRepositoryLogin(
             formatWhatsappNumber($auth_dto_login->no_whatsapp),
             $auth_dto_login->password,
@@ -31,6 +32,7 @@ class AuthUsecase
     }
 
     public function AuthServiceVerifyOTP(
+        //interact with domain: verify otp auth
         AuthVerifyOtpDTOs $auth_dto_verify_otp,
         string $message_otp_invalid,
         string $message_verification_otp_failed,
@@ -45,8 +47,12 @@ class AuthUsecase
         );
     }
 
-    public function AuthServiceRegister(AuthRegisterDTOs $auth_dto_register, string $message_success_register)
+    public function AuthServiceRegister(AuthRegisterDTOs $AuthRegisterDto, string $MessageSuccessRegister)
     {
-        return $this->service->AuthRepositoryRegister($auth_dto_register, $message_success_register);
+        //interact with domain: register auth
+        return $this->service->AuthRepositoryRegister(
+            $AuthRegisterDto,
+            $MessageSuccessRegister
+        );
     }
 }
