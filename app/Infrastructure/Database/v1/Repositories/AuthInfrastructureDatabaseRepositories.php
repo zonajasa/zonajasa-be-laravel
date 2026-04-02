@@ -28,7 +28,15 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
 
         switch (config('app.whatsapp_gateway_mode')) {
             case 'fonte':
-                Http::withHeader([])->post(config('services.fonte.api_base_url') . "/send", []);
+                Http::withHeaders([
+                    'Authorization' => config('services.fonte.device_token')
+                ])->post(config('services.fonte.api_base_url') . "/send", [
+                    'target' => (string)$NoWhatsapp,
+                    'message' => "*{$RandomCode} Kode OTP Anda {$FullName}*\n\n"
+                        . "Gunakan kode ini untuk verifikasi akun Anda.\n"
+                        . "Jangan bagikan kode ini kepada siapa pun.\n"
+                        . "Kode berlaku selama *1 menit*.",
+                ]);
                 break;
             default:
                 //default is waha
