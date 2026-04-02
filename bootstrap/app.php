@@ -17,8 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         ]);
         $middleware->alias([
-            'auth' => App\Infrastructure\Http\Middleware\AuthenticatedMiddleware::class,
-            'header' => \App\Infrastructure\Http\Middleware\HeaderMiddleware::class
+            'auth' => App\Infrastructure\Http\v1\Middleware\AuthenticatedMiddleware::class,
+            'header' => \App\Infrastructure\Http\v1\Middleware\HeaderMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

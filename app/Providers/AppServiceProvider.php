@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Domain\Api\Auth\Repositories\AuthRepositoriesDomainInterface;
-use App\Infrastructure\Database\Repositories\AuthInfrastructureDatabaseRepositories;
+use App\Domain\Api\v1\Auth\Repositories\AuthRepositoriesDomainInterface;
+use App\Infrastructure\Database\v1\Repositories\AuthInfrastructureDatabaseRepositories;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 

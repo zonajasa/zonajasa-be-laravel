@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Internal\Api\v1\Auth\Handler;
+
+use App\Infrastructure\Database\v1\Eloquent\User;
+use App\Infrastructure\Http\v1\Request\LoginRequestInfrastructure;
+use App\Infrastructure\Http\v1\Request\RegisterRequestInfrastructure;
+use App\Infrastructure\Http\v1\Request\VerifyOTPRequestInfrastructure;
+use App\Internal\Api\v1\Auth\Constant\AuthConstant;
+use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
+use App\Internal\Api\v1\Auth\Usecase\AuthUsecase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+class AuthHandler extends AuthConstant
+{
+    public function __construct(
+        private AuthUsecase $usecase
+    ) {}
+
+    public function Login(Request $request, LoginRequestInfrastructure $validation): JsonResponse
+    {
+        try {
+            $validated = $validation->rules($request);
+
+            if ($validated->fails()) {
+                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+            }
+
+            $dto_login = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
+
+            return $this->usecase->AuthServiceLogin(
+                $dto_login,
+                static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP,
+                static::MESSAGE_SUCCESS_LOGIN,
+                static::MESSAGE_VERIFY_ACCOUNT
+            );
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function VerifyOTP(Request $request, VerifyOTPRequestInfrastructure $validation): JsonResponse|array|User
+    {
+        try {
+            $validated = $validation->rules($request);
+
+            if ($validated->fails()) {
+                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+            }
+
+            $dto_verify_otp = new AuthVerifyOtpDTOs($request->otp, $request->no_whatsapp); //simpan object
+            return $this->usecase->AuthServiceVerifyOTP(
+                $dto_verify_otp,
+                static::OTP_INVALID,
+                static::MESSAGE_VERIFICATION_OTP_FAILED,
+                static::MESSAGE_SUCCESS_VERIFY_OTP
+            );
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function Register(Request $request, RegisterRequestInfrastructure $validation)
+    {
+        try {
+            $validated = $validation->rules($request);
+
+            if ($validated->fails()) {
+                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+            }
+
+            //store in dto for object request
+            $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->no_whatsapp, $request->password); //simpan object
+            return $this->usecase->AuthServiceRegister($AuthRegisterDto, static::MESSAGE_SUCCESS_REGISTER);
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function Logout(): JsonResponse
+    {
+        try {
+            // Revoke the current access token and associated refresh token for Passport
+            $logout = Auth::guard('api')->user()->token()->delete();
+            return OkRes(static::MESSAGE_SUCCESS_LOGOUT, $logout);
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+
+    public function Profile(): JsonResponse
+    {
+        try {
+            return OkRes(static::MESSAGE_SUCCESS_PROFILE, Auth::guard('api')->user()); //return user by session
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+        }
+    }
+}
