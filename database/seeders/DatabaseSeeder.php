@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Infrastructure\Database\Eloquent\Role;
-use App\Infrastructure\Database\Eloquent\User;
+use App\Infrastructure\Database\v1\Eloquent\Role;
+use App\Infrastructure\Database\v1\Eloquent\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
