@@ -2,6 +2,7 @@
 
 namespace App\Internal\Api\v1\Auth\Usecase;
 
+use App\Domain\Api\v1\Auth\Entities\AuthRegisterEntitiesDomain;
 use App\Domain\Api\v1\Auth\Services\AuthServicesDomain;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
@@ -45,12 +46,9 @@ class AuthUsecase
         );
     }
 
-    public function AuthServiceRegister(AuthRegisterDTOs $AuthRegisterDto, string $MessageSuccessRegister)
+    public function AuthServiceRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthRegisterEntitiesDomain
     {
         //interact with domain: register auth
-        return $this->service->AuthRepositoryRegister(
-            $AuthRegisterDto,
-            $MessageSuccessRegister
-        );
+        return $this->service->AuthRepositoryRegister($AuthRegisterDto);
     }
 }

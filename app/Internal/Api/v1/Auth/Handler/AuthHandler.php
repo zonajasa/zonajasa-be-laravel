@@ -31,7 +31,7 @@ class AuthHandler extends AuthConstant
                 return CustomError(collect($Validated->errors()), 'Data tidak lengkap');
             }
 
-            $AuthLoginDto = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
+            $AuthLoginDto = new AuthLoginDTOs($request->nomor_whatsapp, $request->password); //simpan object 
 
             return $this->usecase->AuthServiceLogin(
                 $AuthLoginDto,
@@ -78,7 +78,18 @@ class AuthHandler extends AuthConstant
 
             //store in dto for object request
             $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->nomor_whatsapp, $request->password); //simpan object
-            return $this->usecase->AuthServiceRegister($AuthRegisterDto, static::MESSAGE_SUCCESS_REGISTER);
+            $register = $this->usecase->AuthServiceRegister($AuthRegisterDto);
+
+            if ($register instanceof JsonResponse) {
+                return $register; //return response error jika nomor whatsapp sudah terdaftar
+            } else {
+                //return response success
+                return OkRes(static::MESSAGE_SUCCESS_REGISTER, [
+                    'wa_encrypted' => $register->GetWaEncrypted(),
+                    'expire' => $register->GetExpire(),
+                    'label' => $register->GetLabel()
+                ]);
+            }
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
             return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);

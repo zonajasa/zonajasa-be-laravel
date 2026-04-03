@@ -2,6 +2,7 @@
 
 namespace App\Domain\Api\v1\Auth\Services;
 
+use App\Domain\Api\v1\Auth\Entities\AuthRegisterEntitiesDomain;
 use App\Domain\Api\v1\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
@@ -62,28 +63,26 @@ class AuthServicesDomain
         return ErrorRes($MessageVerificationOtpFailed, 422);
     }
 
-    public function AuthRepositoryRegister(AuthRegisterDTOs $AuthRegisterDto, string $MessageSuccessRegister)
+    public function AuthRepositoryRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthRegisterEntitiesDomain
     {
         //validasi no whatsapp
-        if ($this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp))) {
-            return ErrorRes('Nomor whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
+        if (!$this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp))) {
+            //register user
+            $User = $this->repository->UserRegister($AuthRegisterDto);
+
+            //Send otp ke whatsapp client
+            $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NomorWhatsapp, $User['nama_lengkap']);
+
+            //Generate OTP
+            $OTPSubmit = $this->repository->SubmitOTPVerify($CodeOtp, $AuthRegisterDto->NomorWhatsapp);
+
+            //return entity response
+            return new AuthRegisterEntitiesDomain(
+                $OTPSubmit['no_whatsapp'],
+                Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))->format('H:i:s')
+            );
         }
 
-        //register user
-        $User = $this->repository->UserRegister($AuthRegisterDto);
-
-        //Send otp ke whatsapp client
-        $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NomorWhatsapp, $User['nama_lengkap']);
-
-        //Generate OTP
-        $OTPSubmit = $this->repository->SubmitOTPVerify($CodeOtp, $AuthRegisterDto->NomorWhatsapp);
-
-        //return response success
-        return OkRes($MessageSuccessRegister, [
-            'no_whatsapp' => $OTPSubmit['no_whatsapp'], //yang dikirim dari depan adalah no whatsapp yang terenkripsi
-            'expire' => Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))
-                ->format('H:i:s')
-
-        ]);
+        return ErrorRes('Nomor whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
     }
 }
