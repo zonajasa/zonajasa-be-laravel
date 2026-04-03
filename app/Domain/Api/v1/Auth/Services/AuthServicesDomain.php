@@ -51,7 +51,11 @@ class AuthServicesDomain
             if (Crypt::decryptString($Data->code) != $AuthVerifyOtpDTO->otp) {
                 return ErrorRes($MessageOtpInvalid, 422);
             }
-            $GenerateSessionByWhatsappNumber = $this->repository->GenerateSession(Crypt::decryptString($Data->no_whatsapp)); //decrypt nomor whatsapp kemudian generate session user berdasarkan dari nomor whatsapp nya
+
+            ///decrypt nomor whatsapp kemudian generate session user berdasarkan dari nomor whatsapp nya
+            $GenerateSessionByWhatsappNumber = $this->repository->GenerateSession(Crypt::decryptString($Data->no_whatsapp));
+            //update status account is verified
+            $this->repository->UpdateStatusAccountIsVerified(Crypt::decryptString($Data->no_whatsapp));
             return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByWhatsappNumber);
         }
 
@@ -62,7 +66,7 @@ class AuthServicesDomain
     {
         //validasi no whatsapp
         if ($this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp))) {
-            return ErrorRes('No whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
+            return ErrorRes('Nomor whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
         }
 
         //register user

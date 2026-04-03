@@ -19,4 +19,5 @@ interface AuthRepositoriesDomainInterface
     public function FindOTPByNomorWhatsappEncrypted(string $NomorWhatsapp): ?Otp;
     public function GenerateSession(int $NomorWhatsapp): array|User;
     public function UserRegister(AuthRegisterDTOs $AuthRegisterDTO): User;
+    public function UpdateStatusAccountIsVerified(string $NomorWhatsapp): void;
 }

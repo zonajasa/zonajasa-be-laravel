@@ -109,4 +109,9 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return !User::where('no_whatsapp', $NomorWhatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }
+
+    public function UpdateStatusAccountIsVerified(string $NomorWhatsapp): void
+    {
+        User::where('no_whatsapp', $NomorWhatsapp)->update(['status' => 'Y']);
+    }
 }
