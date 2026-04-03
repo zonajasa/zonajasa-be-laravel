@@ -22,19 +22,19 @@ class AuthHandler extends AuthConstant
         private AuthUsecase $usecase
     ) {}
 
-    public function Login(Request $request, LoginRequestInfrastructure $validation): JsonResponse
+    public function Login(Request $request, LoginRequestInfrastructure $Validation): JsonResponse
     {
         try {
-            $validated = $validation->rules($request);
+            $Validated = $Validation->rules($request);
 
-            if ($validated->fails()) {
-                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+            if ($Validated->fails()) {
+                return CustomError(collect($Validated->errors()), 'Data tidak lengkap');
             }
 
-            $dto_login = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
+            $AuthLoginDto = new AuthLoginDTOs($request->no_whatsapp, $request->password); //simpan object 
 
             return $this->usecase->AuthServiceLogin(
-                $dto_login,
+                $AuthLoginDto,
                 static::MESSAGE_ERROR_EMAIL_OR_NO_WHATSAPP,
                 static::MESSAGE_SUCCESS_LOGIN,
                 static::MESSAGE_VERIFY_ACCOUNT
@@ -45,18 +45,18 @@ class AuthHandler extends AuthConstant
         }
     }
 
-    public function VerifyOTP(Request $request, VerifyOTPRequestInfrastructure $validation): JsonResponse|array|User
+    public function VerifyOTP(Request $request, VerifyOTPRequestInfrastructure $Validation): JsonResponse|array|User
     {
         try {
-            $validated = $validation->rules($request);
+            $Validated = $Validation->rules($request);
 
-            if ($validated->fails()) {
-                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+            if ($Validated->fails()) {
+                return CustomError(collect($Validated->errors()), 'Data tidak lengkap');
             }
 
-            $dto_verify_otp = new AuthVerifyOtpDTOs($request->otp, $request->no_whatsapp); //simpan object
+            $AuthVerifyOtpDTO = new AuthVerifyOtpDTOs($request->otp, $request->wa_encrypted); //store dto verify OTP
             return $this->usecase->AuthServiceVerifyOTP(
-                $dto_verify_otp,
+                $AuthVerifyOtpDTO,
                 static::OTP_INVALID,
                 static::MESSAGE_VERIFICATION_OTP_FAILED,
                 static::MESSAGE_SUCCESS_VERIFY_OTP
@@ -77,7 +77,7 @@ class AuthHandler extends AuthConstant
             }
 
             //store in dto for object request
-            $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->no_whatsapp, $request->password); //simpan object
+            $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->nomor_whatsapp, $request->password); //simpan object
             return $this->usecase->AuthServiceRegister($AuthRegisterDto, static::MESSAGE_SUCCESS_REGISTER);
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());

@@ -4,12 +4,12 @@ namespace App\Internal\Api\v1\Auth\DTOs;
 
 class AuthVerifyOtpDTOs
 {
-    public int $otp;
-    public string $no_whatsapp;
+    public int $otp; //simpan OTP yang diinputkan user
+    public string $nomor_whatsapp; //simpan no whatsapp yang terenkripsi
 
-    public function __construct(int $otp, string $no_whatsapp)
+    public function __construct(int $otp, string $nomor_whatsapp)
     {
         $this->otp = $otp;
-        $this->no_whatsapp = $no_whatsapp;
+        $this->nomor_whatsapp = $nomor_whatsapp;
     }
 }

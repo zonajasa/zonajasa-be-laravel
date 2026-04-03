@@ -8,15 +8,15 @@ use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
 
 interface AuthRepositoriesDomainInterface
 {
-    public function ValidateNoWhatsapp(int $NoWhatsapp): ?User;
+    public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User;
     public function ValidatePassword(string $Password, string $HashPassword): bool;
-    public function OTPSendRequestByWhatsapp(int $RandomCode, int $NoWhatsapp, string $FullName): void;
-    public function SubmitOTPVerify(int $CodeOtp, int $NoWhatsapp): Otp;
-    public function SendOTP(int $NoWhatsapp, string $FullName): int;
-    public function ValidateNoWhatsappIsExists(int $NoWhatsapp): bool|User;
+    public function OTPSendRequestByWhatsapp(int $RandomCode, int $NomorWhatsapp, string $FullName): void;
+    public function SubmitOTPVerify(int $CodeOtp, int $NomorWhatsapp): Otp;
+    public function SendOTP(int $NomorWhatsapp, string $FullName): int;
+    public function ValidateNomorWhatsappIsExists(int $NomorWhatsapp): bool|User;
 
     //verify otp
-    public function FindOTPByPhone(int $NoWhatsapp): ?Otp;
-    public function GenerateSession(int $NoWhatsapp): array|User;
+    public function FindOTPByNomorWhatsappEncrypted(string $NomorWhatsapp): ?Otp;
+    public function GenerateSession(int $NomorWhatsapp): array|User;
     public function UserRegister(AuthRegisterDTOs $AuthRegisterDTO): User;
 }

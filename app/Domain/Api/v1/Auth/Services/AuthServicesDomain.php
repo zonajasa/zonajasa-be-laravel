@@ -4,7 +4,9 @@ namespace App\Domain\Api\v1\Auth\Services;
 
 use App\Domain\Api\v1\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\v1\Eloquent\User;
+use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,52 +18,50 @@ class AuthServicesDomain
     ) {}
 
     public function AuthRepositoryLogin(
-        string $no_whatsapp, //sudah di format dari usecase login no whatsapp nya jadi +62 
-        string $password,
-        string $message_error_email_or_whatsapp,
-        string $message_success_login,
-        string $message_verify_account
+        AuthLoginDTOs $AuthLoginDto,
+        string $MessageErrorEmailOrWhatsapp,
+        string $MessageSuccessLogin,
+        string $MessageVerifyAccount
     ): JsonResponse {
         //validate credential
-        $user = $this->repository->ValidateNoWhatsapp($no_whatsapp);
-        if (!$user || !$this->repository->ValidatePassword($password, $user->password)) {
-            return ErrorRes($message_error_email_or_whatsapp);
+        $user = $this->repository->ValidateNomorWhatsapp(formatWhatsappNumber($AuthLoginDto->no_whatsapp));
+        if (!$user || !$this->repository->ValidatePassword($AuthLoginDto->password, $user->password)) {
+            return ErrorRes($MessageErrorEmailOrWhatsapp);
         }
 
         //wajib account nya terverifikasi agar dapat login di sistem
         if ($user->status == 'Y') {
-            $user = $this->repository->GenerateSession($no_whatsapp);
-            return OkRes($message_success_login, $user);
+            $user = $this->repository->GenerateSession(formatWhatsappNumber($AuthLoginDto->no_whatsapp));
+            return OkRes($MessageSuccessLogin, $user);
         }
 
-        return ErrorRes($message_verify_account);
+        return ErrorRes($MessageVerifyAccount);
     }
 
     public function AuthRepositoryVerifyOTP(
-        string $otp,
-        string $no_whatsapp, //wa atau email yang terenkripsi
-        string $message_otp_invalid,
-        string $message_verification_otp_failed,
-        string $message_success_verify_otp
+        AuthVerifyOtpDTOs $AuthVerifyOtpDTO,
+        string $MessageOtpInvalid,
+        string $MessageVerificationOtpFailed,
+        string $MessageSuccessVerifyOtp
     ): JsonResponse|array|User {
-        $no_whatsapp = $this->repository->FindOTPByPhone($no_whatsapp);
-        if (!empty($no_whatsapp)) {
+        $Data = $this->repository->FindOTPByNomorWhatsappEncrypted($AuthVerifyOtpDTO->nomor_whatsapp);
+        if (!empty($Data)) {
 
-            $otp_by_phone = $no_whatsapp->code; //decrypt code otp dari no whatsapp yang terenkripsi
-            if (Crypt::decryptString($otp_by_phone) != $otp) {
-                return ErrorRes($message_otp_invalid, 422);
+            //decrypt otp yang terenkripsi base on dari whatsapp yang terenkripsi lalu dibandingkan dengan otp yang dikirim client
+            if (Crypt::decryptString($Data->code) != $AuthVerifyOtpDTO->otp) {
+                return ErrorRes($MessageOtpInvalid, 422);
             }
-            $generate_session_by_no_whatsapp = $this->repository->GenerateSession(Crypt::decryptString($no_whatsapp->no_whatsapp)); //decrypt no whatsapp agar dapat dicari keberadaan data di tbl user lalu generate session user by dari no whatsapp nya
-            return OkRes($message_success_verify_otp, $generate_session_by_no_whatsapp);
+            $GenerateSessionByWhatsappNumber = $this->repository->GenerateSession(Crypt::decryptString($Data->no_whatsapp)); //decrypt nomor whatsapp kemudian generate session user berdasarkan dari nomor whatsapp nya
+            return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByWhatsappNumber);
         }
 
-        return ErrorRes($message_verification_otp_failed, 422);
+        return ErrorRes($MessageVerificationOtpFailed, 422);
     }
 
     public function AuthRepositoryRegister(AuthRegisterDTOs $AuthRegisterDto, string $MessageSuccessRegister)
     {
         //validasi no whatsapp
-        if ($this->repository->ValidateNoWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NoWhatsapp))) {
+        if ($this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp))) {
             return ErrorRes('No whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
         }
 
@@ -69,10 +69,10 @@ class AuthServicesDomain
         $User = $this->repository->UserRegister($AuthRegisterDto);
 
         //Send otp ke whatsapp client
-        $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NoWhatsapp, $User['nama_lengkap']);
+        $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NomorWhatsapp, $User['nama_lengkap']);
 
         //Generate OTP
-        $OTPSubmit = $this->repository->SubmitOTPVerify($CodeOtp, $AuthRegisterDto->NoWhatsapp);
+        $OTPSubmit = $this->repository->SubmitOTPVerify($CodeOtp, $AuthRegisterDto->NomorWhatsapp);
 
         //return response success
         return OkRes($MessageSuccessRegister, [

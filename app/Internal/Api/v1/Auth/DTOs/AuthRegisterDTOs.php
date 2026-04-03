@@ -5,16 +5,16 @@ namespace App\Internal\Api\v1\Auth\DTOs;
 class AuthRegisterDTOs
 {
     public string $NamaLengkap;
-    public int $NoWhatsapp; //email atau wa
+    public int $NomorWhatsapp; //email atau wa
     public string $Password;
 
     public function __construct(
         string $NamaLengkap,
-        int $NoWhatsapp,
+        int $NomorWhatsapp,
         string $Password,
     ) {
         $this->NamaLengkap = $NamaLengkap;
-        $this->NoWhatsapp = $NoWhatsapp;
+        $this->NomorWhatsapp = $NomorWhatsapp;
         $this->Password = $Password;
     }
 }

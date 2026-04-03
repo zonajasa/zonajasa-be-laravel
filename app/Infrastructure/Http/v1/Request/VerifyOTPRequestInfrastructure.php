@@ -14,7 +14,7 @@ class VerifyOTPRequestInfrastructure
     {
         return Validator::make($request->all(), [
             'otp' => 'required|numeric|digits:6',
-            'no_whatsapp' => 'required|string',
+            'wa_encrypted' => 'required|string', //nomor whatsapp encrypted
         ], $this->messages());
     }
 

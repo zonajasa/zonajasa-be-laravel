@@ -14,7 +14,7 @@ class RegisterRequestInfrastructure
     {
         return Validator::make($request->all(), [
             'nama_lengkap' => 'required|string|min:8',
-            'no_whatsapp' => 'required|numeric|digits_between:10,14',
+            'nomor_whatsapp' => 'required|numeric|digits_between:10,14',
             'password' => 'required|string|min:8'
         ], $this->messages());
     }
@@ -22,8 +22,8 @@ class RegisterRequestInfrastructure
     public function messages(): array
     {
         return [
-            'no_whatsapp.numeric' => 'No whatsapp harus angka',
-            'no_whatsapp.digits_between' => 'No whatsapp wajib 10 hingga 14 digit',
+            'nomor_whatsapp.numeric' => 'Nomor whatsapp harus angka',
+            'nomor_whatsapp.digits_between' => 'Nomor whatsapp wajib 10 hingga 14 digit',
             'min' => ':attribute minimal 8 karaketer',
             'required' => ':attribute jangan di kosongkan'
         ];
