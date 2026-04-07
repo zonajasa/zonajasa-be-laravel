@@ -1,6 +1,6 @@
 <?php
 
-use App\Infrastructure\Database\Eloquent\User;
+use App\Infrastructure\Database\v1\Eloquent\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;

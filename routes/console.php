@@ -10,5 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('otp:check-expire')
     ->everyMinute() //after 1 menit
-    ->withoutOverlapping(10) //under 10 seconds for timeout
     ->name('otp-check-expire');
