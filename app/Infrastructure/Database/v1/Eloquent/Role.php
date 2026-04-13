@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['name', 'description', 'expired_at', 'created_at'];
+    protected $fillable = ['name', 'description', 'created_at', 'created_at'];
     protected $casts = ['created_at' => 'datetime'];
 }
