@@ -31,7 +31,7 @@ class AuthServicesDomain
         }
 
         //wajib account nya terverifikasi agar dapat login di sistem
-        if ($user->status == 'Y') {
+        if ($user->status_account == 1) {
             $user = $this->repository->GenerateSession(formatWhatsappNumber($AuthLoginDto->no_whatsapp));
             return OkRes($MessageSuccessLogin, $user);
         }

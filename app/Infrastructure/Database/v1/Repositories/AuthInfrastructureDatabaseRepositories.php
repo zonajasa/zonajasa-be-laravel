@@ -10,12 +10,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainInterface
 {
     public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User
     {
-        return User::where('no_whatsapp', $NomorWhatsapp)->first();
+        return User::where('whatsapp', $NomorWhatsapp)->first();
     }
 
     public function ValidatePassword(string $Password, string $HashPassword): bool
@@ -66,7 +67,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return Otp::create([
             'code' => Crypt::encryptString($CodeOtp), //encrypt otp
-            'no_whatsapp' => Crypt::encryptString(formatWhatsappNumber($NomorWhatsapp)),
+            'whatsapp' => Crypt::encryptString(formatWhatsappNumber($NomorWhatsapp)),
             'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
@@ -74,12 +75,12 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
 
     public function FindOTPByNomorWhatsappEncrypted(string $NomorWhatsapp): ?Otp
     {
-        return Otp::where('no_whatsapp', $NomorWhatsapp)->first(); //wa yang terenkripsi
+        return Otp::where('whatsapp', $NomorWhatsapp)->first(); //wa yang terenkripsi
     }
 
     public function GenerateSession(int $NomorWhatsapp): array|User
     {
-        $Data['user'] = User::where('no_whatsapp', $NomorWhatsapp)->with('role')->first();
+        $Data['user'] = User::where('whatsapp', $NomorWhatsapp)->with('role')->first();
 
         $TokenResult = $Data['user']->createToken('zonajasa');
         $TokenModel = $TokenResult->token;
@@ -98,20 +99,24 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     public function UserRegister(AuthRegisterDTOs $AuthRegisterDto): User
     {
         return User::create([
-            'nama_lengkap' => $AuthRegisterDto->NamaLengkap,
-            'no_whatsapp' => formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp),
+            'kode_user' => Str::random(20),
+            'roles_id' => 1, //default role sebagai pencari jasa
+            'account_levels_id' => 1, //default account level free
+            'status_account' => 0, //default akun butuh di verifikasi terlebih dahulu
+            'status_service' => 0, //default si user belum punya jasa
+            'full_name' => $AuthRegisterDto->NamaLengkap,
+            'whatsapp' => formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp),
             'password' => Hash::make($AuthRegisterDto->Password),
-            'role_id' => 1 //default role sebagai pencari jasa
         ]);
     }
 
     public function ValidateNomorWhatsappIsExists(int $NomorWhatsapp): bool|User
     {
-        return !User::where('no_whatsapp', $NomorWhatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
+        return !User::where('whatsapp', $NomorWhatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }
 
     public function UpdateStatusAccountIsVerified(string $NomorWhatsapp): void
     {
-        User::where('no_whatsapp', $NomorWhatsapp)->update(['status' => 'Y']);
+        User::where('whatsapp', $NomorWhatsapp)->update(['status' => 'Y']);
     }
 }

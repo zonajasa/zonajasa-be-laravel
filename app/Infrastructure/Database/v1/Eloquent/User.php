@@ -21,11 +21,16 @@ class User extends Authenticatable implements OAuthenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'nama_lengkap',
-        'no_whatsapp',
+        'roles_id',
+        'account_levels_id',
+        'status_account',
+        'status_service',
+        'full_name',
+        'whatsapp',
         'password',
-        'role_id',
-        'created_at'
+        'image',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -35,9 +40,6 @@ class User extends Authenticatable implements OAuthenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'updated_at',
-        'role_id'
     ];
 
     /**
@@ -48,7 +50,6 @@ class User extends Authenticatable implements OAuthenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',
             'password' => 'hashed',
@@ -57,6 +58,6 @@ class User extends Authenticatable implements OAuthenticatable
 
     public function role(): HasOne
     {
-        return $this->hasOne(Role::class, 'id', 'role_id');
+        return $this->hasOne(Role::class, 'id', 'roles_id');
     }
 }
