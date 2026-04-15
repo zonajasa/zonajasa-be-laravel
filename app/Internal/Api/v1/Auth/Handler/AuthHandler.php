@@ -72,7 +72,7 @@ class AuthHandler extends AuthConstant
     public function ResendOTP(Request $request)
     {
         try {
-            $whatsapp = $request->query('nomor_whatsapp');
+            $whatsapp = $request->query('nomor_whatsapp'); //should be query param
             if (empty($whatsapp) || !is_numeric($whatsapp)) {
                 return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
             }
