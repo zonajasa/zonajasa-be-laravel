@@ -63,6 +63,8 @@ zj-rollback:
 	php artisan migrate:rollback
 zj-refresh:
 	php artisan migrate:refresh
+	php artisan db:seed
+	php artisan passport:client --personal
 zj-seed:
 	php artisan db:seed
 zj-laravel-optimize-all:
