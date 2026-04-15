@@ -59,6 +59,6 @@ class User extends Authenticatable implements OAuthenticatable
 
     public function role(): HasOne
     {
-        return $this->hasOne(Role::class, 'id', 'roles_id');
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }
