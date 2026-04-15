@@ -43,12 +43,16 @@ class AuthServicesDomain
         AuthVerifyOtpDTOs $AuthVerifyOtpDTO,
         string $MessageOtpInvalid,
         string $MessageVerificationOtpFailed,
-        string $MessageSuccessVerifyOtp
+        string $MessageSuccessVerifyOtp,
+        string $meesageExpireOtp
     ): JsonResponse|array|User {
         $Data = $this->repository->FindOTPByKodeUser($AuthVerifyOtpDTO->kode_user);
         if (!empty($Data)) {
 
             //check if OTP yang dikirim expire atau tidak
+            if (Carbon::now()->greaterThan(Carbon::parse($Data->expired_at))) {
+                return ErrorRes($meesageExpireOtp, 422);
+            }
 
             //decrypt otp yang terenkripsi base on dari whatsapp yang terenkripsi lalu dibandingkan dengan otp yang dikirim client
             if (Crypt::decryptString($Data->otp) != $AuthVerifyOtpDTO->otp) {

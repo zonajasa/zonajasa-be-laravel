@@ -36,13 +36,15 @@ class AuthUsecase
         AuthVerifyOtpDTOs $AuthVerifyOtpDTO,
         string $MessageOtpInvalid,
         string $MessageVerificationOtpFailed,
-        string $MessageSuccessVerifyOtp
+        string $MessageSuccessVerifyOtp,
+        string $meesageExpireOtp
     ): JsonResponse|array|User {
         return $this->service->AuthRepositoryVerifyOTP(
             $AuthVerifyOtpDTO,
             $MessageOtpInvalid,
             $MessageVerificationOtpFailed,
-            $MessageSuccessVerifyOtp
+            $MessageSuccessVerifyOtp,
+            $meesageExpireOtp
         );
     }
 

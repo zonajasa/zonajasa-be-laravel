@@ -60,7 +60,8 @@ class AuthHandler extends AuthConstant
                 $AuthVerifyOtpDTO,
                 static::OTP_INVALID,
                 static::MESSAGE_VERIFICATION_OTP_FAILED,
-                static::MESSAGE_SUCCESS_VERIFY_OTP
+                static::MESSAGE_SUCCESS_VERIFY_OTP,
+                static::MESSAGE_OTP_EXPIRED
             );
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
