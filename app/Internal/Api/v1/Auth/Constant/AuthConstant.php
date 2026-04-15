@@ -14,4 +14,6 @@ class AuthConstant
     const MESSAGE_SUCCESS_LOGOUT = 'Berhasil logout,silahkan kembali login';
     const MESSAGE_SUCCESS_PROFILE = 'Berhasil mendapatkan data profile';
     const MESSAGE_VERIFY_ACCOUNT = 'Maaf akun anda belum terverifikasi,harap segera lakukan verifikasi';
+    const MESSAGE_INTERNAL_SERVER_ERROR = 'Maaf terjadi kesalahan pada sistem';
+    const MESSAGE_INPUT_INVALID = 'Input tidak valid';
 }

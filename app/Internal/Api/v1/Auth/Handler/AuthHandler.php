@@ -42,7 +42,7 @@ class AuthHandler extends AuthConstant
             );
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
-            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
         }
     }
 
@@ -65,7 +65,20 @@ class AuthHandler extends AuthConstant
             );
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
-            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
+        }
+    }
+
+    public function ResendOTP(Request $request)
+    {
+        try {
+            $whatsapp = $request->query('nomor_whatsapp');
+            if (empty($whatsapp) || !is_numeric($whatsapp)) {
+                return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
+            }
+        } catch (\Exception $error) {
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
         }
     }
 
@@ -110,7 +123,7 @@ class AuthHandler extends AuthConstant
             return OkRes(static::MESSAGE_SUCCESS_LOGOUT, $logout);
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
-            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
         }
     }
 
@@ -120,7 +133,7 @@ class AuthHandler extends AuthConstant
             return OkRes(static::MESSAGE_SUCCESS_PROFILE, Auth::guard('api')->user()); //return user by session
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
-            return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
         }
     }
 }
