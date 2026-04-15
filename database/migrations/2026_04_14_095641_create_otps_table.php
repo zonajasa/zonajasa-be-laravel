@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('otps', function (Blueprint $table) {
             $table->id();
-            $table->uuid('kode_user')->unique();
+            $table->uuid('kode_user');
             $table->string('otp');
             $table->time('expired_at');
             $table->timestamps();

@@ -53,4 +53,10 @@ class AuthUsecase
         //interact with domain: register auth
         return $this->service->AuthRepositoryRegister($AuthRegisterDto);
     }
+
+    public function AuthServiceResendOtp(string $kode_user, string $SuccessMessageResendOtp): JsonResponse
+    {
+        //interact with domain: resend otp auth
+        return $this->service->AuthRepositoryResendOtp($kode_user, $SuccessMessageResendOtp);
+    }
 }

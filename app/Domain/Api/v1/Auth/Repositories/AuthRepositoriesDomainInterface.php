@@ -8,6 +8,10 @@ use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
 
 interface AuthRepositoriesDomainInterface
 {
+    //kode user
+    public function GetUserByKodeUser(string $KodeUser): ?User;
+    public function ValidateByKodeUser(string $KodeUser): bool;
+
     public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User;
     public function ValidatePassword(string $Password, string $HashPassword): bool;
     public function OTPSendRequestByWhatsapp(int $RandomCode, int $NomorWhatsapp, string $FullName): void;

@@ -16,4 +16,5 @@ class AuthConstant
     const MESSAGE_VERIFY_ACCOUNT = 'Maaf akun anda belum terverifikasi,harap segera lakukan verifikasi';
     const MESSAGE_INTERNAL_SERVER_ERROR = 'Maaf terjadi kesalahan pada sistem';
     const MESSAGE_INPUT_INVALID = 'Input tidak valid';
+    const MESSAGE_SUCCESS_RESEND_OTP = 'Berhasil mengirim ulang OTP, silahkan cek kembali di WhatsApp anda';
 }

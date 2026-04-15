@@ -91,4 +91,29 @@ class AuthServicesDomain
 
         return ErrorRes('Nomor whatsapp sudah terdaftar, silahkan Login atau daftar dengan Nomor Whatsapp baru.', 422);
     }
+
+
+    public function AuthRepositoryResendOtp(string $kode_user, string $SuccessMessageResendOtp): JsonResponse
+    {
+
+        //validasi kode user
+        $user_code = $this->repository->ValidateByKodeUser($kode_user);
+        if ($user_code) {
+
+            //get user by kode user
+            $user = $this->repository->GetUserByKodeUser($kode_user);
+
+            //Send otp ke whatsapp client
+            $CodeOtp = $this->repository->SendOTP($user->whatsapp, $user->full_name);
+
+            //Generate OTP
+            $OTPSubmit = $this->repository->SubmitOTP($CodeOtp, $user->kode_user);
+
+            //return success resend
+            return OkRes($SuccessMessageResendOtp, $OTPSubmit);
+        }
+
+
+        return ErrorRes('Invalid kode user', 422);
+    }
 }

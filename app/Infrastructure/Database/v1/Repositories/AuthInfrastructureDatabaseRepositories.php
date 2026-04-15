@@ -14,6 +14,16 @@ use Illuminate\Support\Str;
 
 class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainInterface
 {
+    public function GetUserByKodeUser(string $KodeUser): ?User
+    {
+        return User::where('kode_user', $KodeUser)->first();
+    }
+
+    public function ValidateByKodeUser(string $KodeUser): bool
+    {
+        return !User::where('kode_user', $KodeUser)->exists() ? false : true;
+    }
+
     public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User
     {
         return User::where('whatsapp', $NomorWhatsapp)->first();

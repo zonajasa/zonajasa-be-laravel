@@ -69,13 +69,15 @@ class AuthHandler extends AuthConstant
         }
     }
 
-    public function ResendOTP(Request $request)
+    public function ResendOTP(Request $request): JsonResponse
     {
         try {
-            $whatsapp = $request->query('nomor_whatsapp'); //should be query param
-            if (empty($whatsapp) || !is_numeric($whatsapp)) {
+            $kode_user = $request->post('kode_user'); //should be body request
+            if (empty($kode_user)) {
                 return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
             }
+
+            return $this->usecase->AuthServiceResendOtp($kode_user, static::MESSAGE_SUCCESS_RESEND_OTP);
         } catch (\Exception $error) {
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
             return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
