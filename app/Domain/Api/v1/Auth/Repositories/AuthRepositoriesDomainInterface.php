@@ -16,8 +16,9 @@ interface AuthRepositoriesDomainInterface
     public function ValidateNomorWhatsappIsExists(int $NomorWhatsapp): bool|User;
 
     //verify otp
-    public function FindOTPByNomorWhatsappEncrypted(string $NomorWhatsapp): ?Otp;
+    public function FindOTPByKodeUser(string $KodeUser): ?Otp;
     public function GenerateSession(int $NomorWhatsapp): array|User;
     public function UserRegister(AuthRegisterDTOs $AuthRegisterDTO): User;
-    public function UpdateStatusAccountIsVerified(string $NomorWhatsapp): void;
+    public function UpdateStatusAccountIsVerified(string $KodeUser): void;
+    public function FindWhatsappByKodeUser(string $KodeUser): int;
 }

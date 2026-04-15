@@ -73,9 +73,9 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         ]);
     }
 
-    public function FindOTPByNomorWhatsappEncrypted(string $NomorWhatsapp): ?Otp
+    public function FindOTPByKodeUser(string $KodeUser): ?Otp
     {
-        return Otp::where('whatsapp', $NomorWhatsapp)->first(); //wa yang terenkripsi
+        return Otp::where('kode_user', $KodeUser)->first();
     }
 
     public function GenerateSession(int $NomorWhatsapp): array|User
@@ -115,8 +115,13 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return !User::where('whatsapp', $NomorWhatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }
 
-    public function UpdateStatusAccountIsVerified(string $NomorWhatsapp): void
+    public function UpdateStatusAccountIsVerified(string $KodeUser): void
     {
-        User::where('whatsapp', $NomorWhatsapp)->update(['status' => 'Y']);
+        User::where('kode_user', $KodeUser)->update(['status_account' => 1]);
+    }
+
+    public function FindWhatsappByKodeUser(string $KodeUser): int
+    {
+        return User::where('kode_user', $KodeUser)->first()->whatsapp;
     }
 }

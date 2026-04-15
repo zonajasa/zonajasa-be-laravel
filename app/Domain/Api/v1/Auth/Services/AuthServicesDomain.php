@@ -45,19 +45,21 @@ class AuthServicesDomain
         string $MessageVerificationOtpFailed,
         string $MessageSuccessVerifyOtp
     ): JsonResponse|array|User {
-        $Data = $this->repository->FindOTPByNomorWhatsappEncrypted($AuthVerifyOtpDTO->nomor_whatsapp);
+        $Data = $this->repository->FindOTPByKodeUser($AuthVerifyOtpDTO->kode_user);
         if (!empty($Data)) {
 
+            //check if OTP yang dikirim expire atau tidak
+
             //decrypt otp yang terenkripsi base on dari whatsapp yang terenkripsi lalu dibandingkan dengan otp yang dikirim client
-            if (Crypt::decryptString($Data->code) != $AuthVerifyOtpDTO->otp) {
+            if (Crypt::decryptString($Data->otp) != $AuthVerifyOtpDTO->otp) {
                 return ErrorRes($MessageOtpInvalid, 422);
             }
 
-            ///decrypt nomor whatsapp kemudian generate session user berdasarkan dari nomor whatsapp nya
-            $GenerateSessionByWhatsappNumber = $this->repository->GenerateSession(Crypt::decryptString($Data->no_whatsapp));
+            ///generate session user berdasarkan nomor whatsapp dari kode user
+            $GenerateSessionByKodeUser = $this->repository->GenerateSession($this->repository->FindWhatsappByKodeUser($Data->kode_user));
             //update status account is verified
-            $this->repository->UpdateStatusAccountIsVerified(Crypt::decryptString($Data->no_whatsapp));
-            return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByWhatsappNumber);
+            $this->repository->UpdateStatusAccountIsVerified($Data->kode_user);
+            return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByKodeUser);
         }
 
         return ErrorRes($MessageVerificationOtpFailed, 422);
