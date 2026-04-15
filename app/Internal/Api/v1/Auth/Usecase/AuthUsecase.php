@@ -35,14 +35,12 @@ class AuthUsecase
         //interact with domain: verify otp auth
         AuthVerifyOtpDTOs $AuthVerifyOtpDTO,
         string $MessageOtpInvalid,
-        string $MessageVerificationOtpFailed,
         string $MessageSuccessVerifyOtp,
         string $meesageExpireOtp
     ): JsonResponse|array|User {
         return $this->service->AuthRepositoryVerifyOTP(
             $AuthVerifyOtpDTO,
             $MessageOtpInvalid,
-            $MessageVerificationOtpFailed,
             $MessageSuccessVerifyOtp,
             $meesageExpireOtp
         );

@@ -85,7 +85,10 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
 
     public function FindOTPByKodeUser(string $KodeUser): ?Otp
     {
-        return Otp::where('kode_user', $KodeUser)->first();
+        return Otp::where([
+            ['kode_user', $KodeUser],
+            ['expired_at', '>', Carbon::now(config('app.timezone'))], //buat ngambil yang belum expire
+        ])->first();
     }
 
     public function GenerateSession(int $NomorWhatsapp): array|User

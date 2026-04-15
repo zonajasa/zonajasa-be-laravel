@@ -59,7 +59,6 @@ class AuthHandler extends AuthConstant
             return $this->usecase->AuthServiceVerifyOTP(
                 $AuthVerifyOtpDTO,
                 static::OTP_INVALID,
-                static::MESSAGE_VERIFICATION_OTP_FAILED,
                 static::MESSAGE_SUCCESS_VERIFY_OTP,
                 static::MESSAGE_OTP_EXPIRED
             );
