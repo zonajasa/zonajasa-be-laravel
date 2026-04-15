@@ -71,14 +71,14 @@ class AuthServicesDomain
             $User = $this->repository->UserRegister($AuthRegisterDto);
 
             //Send otp ke whatsapp client
-            $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NomorWhatsapp, $User['nama_lengkap']);
+            $CodeOtp = $this->repository->SendOTP($AuthRegisterDto->NomorWhatsapp, $User['full_name']);
 
             //Generate OTP
-            $OTPSubmit = $this->repository->SubmitOTPVerify($CodeOtp, $AuthRegisterDto->NomorWhatsapp);
+            $OTPSubmit = $this->repository->SubmitOTP($CodeOtp, $User['kode_user']);
 
             //return entity response
             return new AuthRegisterEntitiesDomain(
-                $OTPSubmit['no_whatsapp'],
+                $OTPSubmit['kode_user'],
                 Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))->format('H:i:s')
             );
         }

@@ -11,7 +11,7 @@ interface AuthRepositoriesDomainInterface
     public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User;
     public function ValidatePassword(string $Password, string $HashPassword): bool;
     public function OTPSendRequestByWhatsapp(int $RandomCode, int $NomorWhatsapp, string $FullName): void;
-    public function SubmitOTPVerify(int $CodeOtp, int $NomorWhatsapp): Otp;
+    public function SubmitOTP(int $Otp, string $KodeUser): Otp;
     public function SendOTP(int $NomorWhatsapp, string $FullName): int;
     public function ValidateNomorWhatsappIsExists(int $NomorWhatsapp): bool|User;
 

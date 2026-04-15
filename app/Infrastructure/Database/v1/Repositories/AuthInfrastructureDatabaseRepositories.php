@@ -63,11 +63,11 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return $RandomCode;
     }
 
-    public function SubmitOTPVerify(int $CodeOtp, int $NomorWhatsapp): Otp
+    public function SubmitOTP(int $Otp, string $KodeUser): Otp
     {
         return Otp::create([
-            'code' => Crypt::encryptString($CodeOtp), //encrypt otp
-            'whatsapp' => Crypt::encryptString(formatWhatsappNumber($NomorWhatsapp)),
+            'kode_user' => $KodeUser, //encrypt otp
+            'otp' => Crypt::encryptString($Otp),
             'expired_at' => now()->timezone(config('app.timezone'))->addMinute(1),
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
@@ -100,8 +100,8 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return User::create([
             'kode_user' => Str::random(20),
-            'roles_id' => 1, //default role sebagai pencari jasa
-            'account_levels_id' => 1, //default account level free
+            'role_id' => 1, //default role sebagai pencari jasa
+            'account_level_id' => 1, //default account level free
             'status_account' => 0, //default akun butuh di verifikasi terlebih dahulu
             'status_service' => 0, //default si user belum punya jasa
             'full_name' => $AuthRegisterDto->NamaLengkap,

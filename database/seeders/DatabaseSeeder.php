@@ -67,9 +67,9 @@ class DatabaseSeeder extends Seeder
             ]]);
 
             DB::table('users')->insert([
-                'id' => Str::random(20),
-                'roles_id' => 1, //pencari jasa
-                'account_levels_id' => 1, //free
+                'kode_user' => Str::random(20),
+                'role_id' => 1, //pencari jasa
+                'account_level_id' => 1, //free
                 'status_account' => 1,
                 'status_service' => 0, //belum punya jasa
                 'full_name' => 'La bengki',

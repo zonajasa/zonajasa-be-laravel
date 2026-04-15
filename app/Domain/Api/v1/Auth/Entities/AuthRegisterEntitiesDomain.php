@@ -4,20 +4,20 @@ namespace App\Domain\Api\v1\Auth\Entities;
 
 class AuthRegisterEntitiesDomain
 {
-    private string $WaEncrypted;
+    private string $KodeUser;
     private string $Expire;
     private string $Label;
 
-    public function __construct(string $WaEncrypted, string $Expire, string $Label = 'register_token')
+    public function __construct(string $KodeUser, string $Expire, string $Label = 'register_token')
     {
-        $this->WaEncrypted = $WaEncrypted;
+        $this->KodeUser = $KodeUser;
         $this->Expire = $Expire;
         $this->Label = $Label;
     }
 
-    public function GetWaEncrypted(): string|null
+    public function GetKodeUser(): string|null
     {
-        return $this->WaEncrypted ?? null;
+        return $this->KodeUser ?? null;
     }
 
     public function GetExpire(): string|null

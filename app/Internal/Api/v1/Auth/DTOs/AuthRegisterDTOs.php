@@ -5,7 +5,7 @@ namespace App\Internal\Api\v1\Auth\DTOs;
 class AuthRegisterDTOs
 {
     public string $NamaLengkap;
-    public int $NomorWhatsapp; //email atau wa
+    public int $NomorWhatsapp; //whatsapp number
     public string $Password;
 
     public function __construct(

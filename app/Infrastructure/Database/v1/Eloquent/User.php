@@ -21,8 +21,9 @@ class User extends Authenticatable implements OAuthenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'roles_id',
-        'account_levels_id',
+        'kode_user',
+        'role_id',
+        'account_level_id',
         'status_account',
         'status_service',
         'full_name',

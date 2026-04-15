@@ -13,6 +13,7 @@ use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
 use App\Internal\Api\v1\Auth\Usecase\AuthUsecase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -69,28 +70,32 @@ class AuthHandler extends AuthConstant
 
     public function Register(Request $request, RegisterRequestInfrastructure $validation)
     {
+        $validated = $validation->rules($request);
+
+        if ($validated->fails()) {
+            return CustomError(collect($validated->errors()), 'Data tidak lengkap');
+        }
+
+        //store in dto for object request
+        $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->nomor_whatsapp, $request->password); //simpan object
+
+        DB::beginTransaction();
         try {
-            $validated = $validation->rules($request);
-
-            if ($validated->fails()) {
-                return CustomError(collect($validated->errors()), 'Data tidak lengkap');
-            }
-
-            //store in dto for object request
-            $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->nomor_whatsapp, $request->password); //simpan object
             $register = $this->usecase->AuthServiceRegister($AuthRegisterDto);
+            DB::commit();
 
             if ($register instanceof JsonResponse) {
                 return $register; //return response error jika nomor whatsapp sudah terdaftar
             } else {
                 //return response success
                 return OkRes(static::MESSAGE_SUCCESS_REGISTER, [
-                    'wa_encrypted' => $register->GetWaEncrypted(),
+                    'kode_user' => $register->GetKodeUser(),
                     'expire' => $register->GetExpire(),
                     'label' => $register->GetLabel()
                 ]);
             }
         } catch (\Exception $error) {
+            DB::rollBack();
             Log::error('AuthServicesDomain Error: ' . $error->getMessage());
             return ErrorRes('Maaf terjadi kesalahan pada sistem', 500);
         }
