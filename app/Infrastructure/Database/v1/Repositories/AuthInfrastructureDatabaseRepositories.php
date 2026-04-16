@@ -87,7 +87,8 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return Otp::where([
             ['kode_user', $KodeUser],
-            ['expired_at', '>', Carbon::now(config('app.timezone'))], //buat ngambil yang belum expire
+            ['expired_at', '>', now()->timezone(config('app.timezone'))->format('H:i:s')], //buat ngambil yang belum expire
+            ['created_at', '>=', now()->timezone(config('app.timezone'))->format('Y-m-d')], //baca otp di tanggal sekarang buat ngambil yang dibuat hari ini tanggal kemarin/sebelumnya jan
         ])->first();
     }
 
