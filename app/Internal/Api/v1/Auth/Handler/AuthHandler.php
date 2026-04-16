@@ -5,10 +5,12 @@ namespace App\Internal\Api\v1\Auth\Handler;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Infrastructure\Http\v1\Request\LoginRequestInfrastructure;
 use App\Infrastructure\Http\v1\Request\RegisterRequestInfrastructure;
+use App\Infrastructure\Http\v1\Request\ResetPasswordRequestInfrastructure;
 use App\Infrastructure\Http\v1\Request\VerifyOTPRequestInfrastructure;
 use App\Internal\Api\v1\Auth\Constant\AuthConstant;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthResetPasswordDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
 use App\Internal\Api\v1\Auth\Usecase\AuthUsecase;
 use Illuminate\Http\Request;
@@ -167,5 +169,27 @@ class AuthHandler extends AuthConstant
         }
     }
 
-    public function ResetPassword() {}
+    public function ResetPassword(Request $request, ResetPasswordRequestInfrastructure $Validation): JsonResponse
+    {
+        $Validated = $Validation->rules($request);
+
+        if ($Validated->fails()) {
+            return CustomError(collect($Validated->errors()), 'Data tidak lengkap');
+        }
+
+        DB::beginTransaction();
+        try {
+            $AuthResetPasswordDTO = new AuthResetPasswordDTOs($request->kode_user, $request->password, $request->password_confirmation); //store dto reset password
+            $data = $this->usecase->AuthServiceResetPassword(
+                $AuthResetPasswordDTO,
+            );
+            DB::commit();
+
+            return OkRes(static::MESSAGE_SUCCESS_RESET_PASSWORD, true);
+        } catch (\Exception $error) {
+            DB::rollBack();
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
+        }
+    }
 }

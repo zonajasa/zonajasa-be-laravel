@@ -7,9 +7,11 @@ use App\Domain\Api\v1\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthResetPasswordDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthServicesDomain
@@ -133,5 +135,14 @@ class AuthServicesDomain
             Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))->format('H:i:s'),
             'forgot_token'
         );
+    }
+
+    public function AuthRepositoryResetPassword(
+        AuthResetPasswordDTOs $AuthResetPasswordDTO,
+    ): void {
+        //validasi password confirmation
+        $this->repository->GetUserByKodeUser($AuthResetPasswordDTO->Kode_user)->update([
+            'password' => Hash::make($AuthResetPasswordDTO->Password)
+        ]);
     }
 }

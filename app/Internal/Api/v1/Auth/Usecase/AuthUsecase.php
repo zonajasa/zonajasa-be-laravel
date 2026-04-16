@@ -7,6 +7,7 @@ use App\Domain\Api\v1\Auth\Services\AuthServicesDomain;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthRegisterDTOs;
+use App\Internal\Api\v1\Auth\DTOs\AuthResetPasswordDTOs;
 use App\Internal\Api\v1\Auth\DTOs\AuthVerifyOtpDTOs;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -62,5 +63,14 @@ class AuthUsecase
     {
         // interact with domain: forgot password auth
         return $this->service->AuthRepositoryForgotPassword($nomor_whatsapp);
+    }
+
+    public function AuthServiceResetPassword(
+        AuthResetPasswordDTOs $AuthResetPasswordDTO,
+    ): void {
+        // interact with domain: reset password auth
+        $this->service->AuthRepositoryResetPassword(
+            $AuthResetPasswordDTO,
+        );
     }
 }
