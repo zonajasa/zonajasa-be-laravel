@@ -10,5 +10,5 @@ class JasaServicesDomain
         private JasaRepositoriesDomainInterface $repository
     ) {}
 
-    public function index($data) {}
+    public function create($data) {}
 }

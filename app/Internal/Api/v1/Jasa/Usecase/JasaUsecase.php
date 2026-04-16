@@ -10,9 +10,9 @@ class JasaUsecase
         private JasaServicesDomain $service
     ) {}
 
-    public function index($data)
+    public function create($data)
     {
         //interact with domain create jasa
-        return $this->service->index($data);
+        return $this->service->create($data);
     }
 }
