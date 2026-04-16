@@ -9,4 +9,10 @@ class JasaUsecase
     public function __construct(
         private JasaServicesDomain $service
     ) {}
+
+    public function create($data)
+    {
+        //interact with domain create jasa
+        return $this->service->create($data);
+    }
 }

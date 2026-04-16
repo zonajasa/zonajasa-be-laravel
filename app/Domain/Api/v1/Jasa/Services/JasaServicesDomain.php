@@ -9,4 +9,6 @@ class JasaServicesDomain
     public function __construct(
         private JasaRepositoriesDomainInterface $repository
     ) {}
+
+    public function create($data) {}
 }
