@@ -21,6 +21,80 @@ class DatabaseSeeder extends Seeder
 
         DB::beginTransaction();
         try {
+            DB::table('categories')->insert([
+                [
+                    'name' => 'Rumah & Properti',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Kebersihan & Laundry',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Servis & Perbaikan',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Otomotif',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Transportasi & Logistik',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Kesehatan & Perawatan',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Digital & IT',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Kreatif & Media',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Event & Hospitality Catering',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Kecantikan & Lifestyle',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Pendidikan & Pelatihan',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Bisnis, Keuangan & Legal',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Hewan Peliharaan',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'name' => 'Sewa & Peralatan',
+                    'image' => 'https://cdn-icons-png.flaticon.com/512/5968/5968863.png',
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+            ]);
+
+
             DB::table('roles')->insert([
                 [
                     'name' => 'Pencari Jasa',
