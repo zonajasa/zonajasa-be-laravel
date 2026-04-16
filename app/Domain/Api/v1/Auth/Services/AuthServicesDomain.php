@@ -55,11 +55,21 @@ class AuthServicesDomain
                 return ErrorRes($MessageOtpInvalid, 422);
             }
 
-            ///generate session user berdasarkan nomor whatsapp dari kode user
-            $GenerateSessionByKodeUser = $this->repository->GenerateSession($this->repository->FindWhatsappByKodeUser($Data->kode_user));
-            //update status account is verified
-            $this->repository->UpdateStatusAccountIsVerified($Data->kode_user);
-            return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByKodeUser);
+            switch ($AuthVerifyOtpDTO->type) {
+                case 'register_token':
+                    ///generate session user berdasarkan nomor whatsapp dari kode user
+                    $GenerateSessionByKodeUser = $this->repository->GenerateSession($this->repository->FindWhatsappByKodeUser($Data->kode_user));
+                    //update status account is verified
+                    $this->repository->UpdateStatusAccountIsVerified($Data->kode_user);
+                    return OkRes($MessageSuccessVerifyOtp, $GenerateSessionByKodeUser);
+                    break;
+                default:
+                    //forgot token response default: untuk reset password (tanpa generate session)
+                    return OkRes($MessageSuccessVerifyOtp, [
+                        'kode_user' => $Data->kode_user,
+                        'label' => $AuthVerifyOtpDTO->type
+                    ]);
+            }
         }
 
         return ErrorRes($meesageExpireOtp, 422);

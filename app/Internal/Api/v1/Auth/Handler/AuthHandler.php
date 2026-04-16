@@ -57,7 +57,7 @@ class AuthHandler extends AuthConstant
                 return CustomError(collect($Validated->errors()), 'Data tidak lengkap');
             }
 
-            $AuthVerifyOtpDTO = new AuthVerifyOtpDTOs($request->otp, $request->kode_user); //store dto verify OTP
+            $AuthVerifyOtpDTO = new AuthVerifyOtpDTOs($request->otp, $request->kode_user, $request->type); //store dto verify OTP
             return $this->usecase->AuthServiceVerifyOTP(
                 $AuthVerifyOtpDTO,
                 static::OTP_INVALID,

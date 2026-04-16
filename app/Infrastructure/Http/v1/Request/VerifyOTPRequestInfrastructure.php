@@ -15,6 +15,7 @@ class VerifyOTPRequestInfrastructure
         return Validator::make($request->all(), [
             'otp' => 'required|numeric|digits:6',
             'kode_user' => 'required|string', //kode user encrypted
+            'type' => 'required|string|in:register_token,forgot_token' //type OTP untuk membedakan apakah OTP untuk register atau forgot password
         ], $this->messages());
     }
 
@@ -22,7 +23,8 @@ class VerifyOTPRequestInfrastructure
     {
         return [
             'required' => ':attribute jangan di kosongkan',
-            'digits' => ':attribute minimal 6 digit'
+            'digits' => ':attribute minimal 6 digit',
+            'in' => ':attribute tidak valid'
         ];
     }
 }
