@@ -100,7 +100,7 @@ class AuthHandler extends AuthConstant
             DB::commit();
 
             if ($register instanceof JsonResponse) {
-                return $register; //return response error jika nomor whatsapp sudah terdaftar
+                return $register; //return json response whats if happen of service domain register
             } else {
                 //return response success
                 return OkRes(static::MESSAGE_SUCCESS_REGISTER, [
@@ -137,4 +137,35 @@ class AuthHandler extends AuthConstant
             return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
         }
     }
+
+    public function ForgotPassword(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $nomor_whatsapp = $request->post('nomor_whatsapp'); //should be body request
+            if (empty($nomor_whatsapp) || !is_numeric($nomor_whatsapp)) {
+                return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
+            }
+
+            $forgot = $this->usecase->AuthServiceForgotPassword((int)$nomor_whatsapp, static::MESSAGE_SUCCESS_FORGOT_PASSWORD);
+            DB::commit();
+
+            if ($forgot instanceof JsonResponse) {
+                return $forgot; //return json response whats if happen of service domain forgot password
+            } else {
+                //return response success
+                return OkRes(static::MESSAGE_SUCCESS_FORGOT_PASSWORD, [
+                    'kode_user' => $forgot->GetKodeUser(),
+                    'expire' => $forgot->GetExpire(),
+                    'label' => $forgot->GetLabel()
+                ]);
+            }
+        } catch (\Exception $error) {
+            DB::rollBack();
+            Log::error('AuthServicesDomain Error: ' . $error->getMessage());
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
+        }
+    }
+
+    public function ResetPassword() {}
 }

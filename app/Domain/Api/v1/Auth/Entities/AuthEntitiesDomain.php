@@ -2,7 +2,7 @@
 
 namespace App\Domain\Api\v1\Auth\Entities;
 
-class AuthRegisterEntitiesDomain
+class AuthEntitiesDomain
 {
     private string $KodeUser;
     private string $Expire;

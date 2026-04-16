@@ -2,7 +2,7 @@
 
 namespace App\Internal\Api\v1\Auth\Usecase;
 
-use App\Domain\Api\v1\Auth\Entities\AuthRegisterEntitiesDomain;
+use App\Domain\Api\v1\Auth\Entities\AuthEntitiesDomain;
 use App\Domain\Api\v1\Auth\Services\AuthServicesDomain;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
@@ -46,7 +46,7 @@ class AuthUsecase
         );
     }
 
-    public function AuthServiceRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthRegisterEntitiesDomain
+    public function AuthServiceRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthEntitiesDomain
     {
         //interact with domain: register auth
         return $this->service->AuthRepositoryRegister($AuthRegisterDto);
@@ -56,5 +56,11 @@ class AuthUsecase
     {
         //interact with domain: resend otp auth
         return $this->service->AuthRepositoryResendOtp($kode_user, $SuccessMessageResendOtp);
+    }
+
+    public function AuthServiceForgotPassword(int $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
+    {
+        // interact with domain: forgot password auth
+        return $this->service->AuthRepositoryForgotPassword($nomor_whatsapp);
     }
 }

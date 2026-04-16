@@ -2,7 +2,7 @@
 
 namespace App\Domain\Api\v1\Auth\Services;
 
-use App\Domain\Api\v1\Auth\Entities\AuthRegisterEntitiesDomain;
+use App\Domain\Api\v1\Auth\Entities\AuthEntitiesDomain;
 use App\Domain\Api\v1\Auth\Repositories\AuthRepositoriesDomainInterface;
 use App\Infrastructure\Database\v1\Eloquent\User;
 use App\Internal\Api\v1\Auth\DTOs\AuthLoginDTOs;
@@ -63,7 +63,7 @@ class AuthServicesDomain
         return ErrorRes($meesageExpireOtp, 422);
     }
 
-    public function AuthRepositoryRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthRegisterEntitiesDomain
+    public function AuthRepositoryRegister(AuthRegisterDTOs $AuthRegisterDto): JsonResponse|AuthEntitiesDomain
     {
         //validasi no whatsapp
         if (!$this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp))) {
@@ -77,7 +77,7 @@ class AuthServicesDomain
             $OTPSubmit = $this->repository->SubmitOTP($CodeOtp, $User['kode_user']);
 
             //return entity response
-            return new AuthRegisterEntitiesDomain(
+            return new AuthEntitiesDomain(
                 $OTPSubmit['kode_user'],
                 Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))->format('H:i:s')
             );
@@ -109,5 +109,29 @@ class AuthServicesDomain
 
 
         return ErrorRes('Invalid kode user', 422);
+    }
+
+
+    public function AuthRepositoryForgotPassword(int $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
+    {
+
+        if (!$this->repository->ValidateNomorWhatsappIsExists($nomor_whatsapp)) {
+            return ErrorRes('Nomor whatsapp tidak terdaftar', 422);
+        }
+
+        //validate & get user by nomor whatsapp
+        $user = $this->repository->ValidateNomorWhatsapp($nomor_whatsapp);
+
+        //Send otp ke whatsapp client
+        $CodeOtp = $this->repository->SendOTP($user->whatsapp, $user->full_name);
+
+        //Generate OTP
+        $OTPSubmit = $this->repository->SubmitOTP($CodeOtp, $user->kode_user);
+
+        return new AuthEntitiesDomain(
+            $OTPSubmit['kode_user'],
+            Carbon::parse($OTPSubmit['expired_at'])->timezone(config('app.timezone'))->format('H:i:s'),
+            'forgot_token'
+        );
     }
 }

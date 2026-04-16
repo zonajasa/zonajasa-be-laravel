@@ -16,4 +16,5 @@ class AuthConstant
     const MESSAGE_INTERNAL_SERVER_ERROR = 'Maaf terjadi kesalahan pada sistem';
     const MESSAGE_INPUT_INVALID = 'Input tidak valid';
     const MESSAGE_SUCCESS_RESEND_OTP = 'Berhasil mengirim ulang OTP, silahkan cek kembali di WhatsApp anda';
+    const MESSAGE_SUCCESS_FORGOT_PASSWORD = 'Berhasil melakukan permintaan reset password, silahkan cek kembali di WhatsApp anda';
 }
