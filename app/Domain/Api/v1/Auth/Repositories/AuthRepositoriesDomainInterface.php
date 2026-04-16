@@ -25,4 +25,7 @@ interface AuthRepositoriesDomainInterface
     public function UserRegister(AuthRegisterDTOs $AuthRegisterDTO): User;
     public function UpdateStatusAccountIsVerified(string $KodeUser): void;
     public function FindWhatsappByKodeUser(string $KodeUser): int;
+
+    //reset password
+    public function SendMessageAfterResetPasswordSuccess(string $NomorWhatsapp, string $FullName): void;
 }

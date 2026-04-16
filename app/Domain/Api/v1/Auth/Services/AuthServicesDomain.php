@@ -154,5 +154,9 @@ class AuthServicesDomain
         $this->repository->GetUserByKodeUser($AuthResetPasswordDTO->Kode_user)->update([
             'password' => Hash::make($AuthResetPasswordDTO->Password)
         ]);
+
+        //send message after reset password success
+        $user = $this->repository->GetUserByKodeUser($AuthResetPasswordDTO->Kode_user);
+        $this->repository->SendMessageAfterResetPasswordSuccess($user->whatsapp, $user->full_name);
     }
 }

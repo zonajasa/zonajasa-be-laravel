@@ -138,4 +138,39 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
     {
         return User::where('kode_user', $KodeUser)->first()->whatsapp;
     }
+
+    public function SendMessageAfterResetPasswordSuccess(string $NomorWhatsapp, string $FullName): void
+    {
+        switch (config('app.whatsapp_gateway_mode')) {
+            case 'fonte':
+                Http::withHeaders([
+                    'Authorization' => config('services.fonte.device_token')
+                ])->post(config('services.fonte.api_base_url') . "/send", [
+                    'target' => $NomorWhatsapp,
+                    'message' => "Halo {$FullName}👋\n\n"
+                        . "Kami ingin memberitahukan bahwa password akun Anda telah berhasil diubah.\n\n"
+                        . "✅ Password berhasil diperbarui\n"
+                        . "🔒 Akun Anda sekarang lebih aman\n\n"
+                        . "Terima kasih telah menjaga keamanan akun Anda.\n\n"
+                        . "Salam,\nZonajasa Team",
+                ]);
+                break;
+            default:
+                //default is waha
+                Http::withHeaders([
+                    'X-Api-Key' => config('services.waha.api_key'),
+                    'Accept' => config('services.waha.accept')
+                ])->post(config('services.waha.api_base_url') . "/api/sendText", [
+                    "chatId" => formatWhatsappNumber($NomorWhatsapp) . "@c.us",
+                    "text" => "Halo {$FullName}👋\n\n"
+                        . "Kami ingin memberitahukan bahwa password akun Anda telah berhasil diubah.\n\n"
+                        . "✅ Password berhasil diperbarui\n"
+                        . "🔒 Akun Anda sekarang lebih aman\n\n"
+                        . "Terima kasih telah menjaga keamanan akun Anda.\n\n"
+                        . "Salam,\nZonajasa Team",
+                    "session" => "default"
+                ]);
+                break;
+        }
+    }
 }
