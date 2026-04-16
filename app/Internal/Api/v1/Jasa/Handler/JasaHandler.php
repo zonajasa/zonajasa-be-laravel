@@ -12,7 +12,7 @@ class JasaHandler extends JasaConstant
         private JasaUsecase $usecase
     ) {}
 
-    public function list() {}
+    public function index() {}
     public function create(Request $request)
     {
         $req = $request->post();
