@@ -13,14 +13,14 @@ class JasaHandler extends JasaConstant
     ) {}
 
     public function list() {}
-    public function create(Request $request)
+    public function index(Request $request)
     {
         $req = $request->post();
         if (empty($req)) {
             return ErrorRes(self::INVALID_REQUEST);
         }
 
-        return $this->usecase->create($req);
+        return $this->usecase->index($req);
     }
     public function update($id, Request $request) {}
     public function delete($id, Request $request) {}
