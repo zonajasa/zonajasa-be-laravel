@@ -33,7 +33,7 @@ class JasaServicesDomain
         $this->repository->CreateServiceWithWaktu($id, $data);
 
         //update status true of status_service:menandakan bahwa user tersebut punya jasa & layanan
-        $this->repository->Query('users')->where('kode_user', Auth::guard('user')->user()->kode_user)->update(['status_service', true]);
+        $this->repository->Query('users')->where('kode_user', Auth::guard('api')->user()->kode_user)->update(['status_service' => true]);
     }
 
     public function delete(int $id, string $MessageInvalidIDService, string $MessageSuccessDeleteService): JsonResponse
@@ -64,7 +64,7 @@ class JasaServicesDomain
         $this->repository->DeleteService($service->id);
 
         //update status false of status_service:menandakan bahwa user tersebut sudah tidak memiliki jasa atau layanan secara record
-        $this->repository->Query('users')->where('kode_user', Auth::guard('user')->user()->kode_user)->update(['status_service', false]);
+        $this->repository->Query('users')->where('kode_user', Auth::guard('api')->user()->kode_user)->update(['status_service' => false]);
 
         return OkRes($MessageSuccessDeleteService, $service);
     }
