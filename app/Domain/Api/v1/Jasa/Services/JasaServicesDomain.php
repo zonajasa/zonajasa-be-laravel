@@ -3,6 +3,7 @@
 namespace App\Domain\Api\v1\Jasa\Services;
 
 use App\Domain\Api\v1\Jasa\Repositories\JasaRepositoriesDomainInterface;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JasaServicesDomain
@@ -13,7 +14,6 @@ class JasaServicesDomain
 
     public function create($data): void
     {
-
         //service::parent
         $id = $this->repository->CreateService($data);
 
@@ -31,6 +31,9 @@ class JasaServicesDomain
 
         //service::child with waktu
         $this->repository->CreateServiceWithWaktu($id, $data);
+
+        //update status true of status_service:menandakan bahwa user tersebut punya jasa & layanan
+        $this->repository->Query('users')->where('kode_user', Auth::guard('user')->user()->kode_user)->update(['status_service', true]);
     }
 
     public function delete(int $id, string $MessageInvalidIDService, string $MessageSuccessDeleteService): JsonResponse
@@ -54,9 +57,14 @@ class JasaServicesDomain
         //service::child delete with operational
         $this->repository->DeleteServiceWithOperational($service->id);
 
+        //service::child delete with waktu
         $this->repository->DeleteServiceWithWaktu($service->id);
 
+        //service::parent delete
         $this->repository->DeleteService($service->id);
+
+        //update status false of status_service:menandakan bahwa user tersebut sudah tidak memiliki jasa atau layanan secara record
+        $this->repository->Query('users')->where('kode_user', Auth::guard('user')->user()->kode_user)->update(['status_service', false]);
 
         return OkRes($MessageSuccessDeleteService, $service);
     }
