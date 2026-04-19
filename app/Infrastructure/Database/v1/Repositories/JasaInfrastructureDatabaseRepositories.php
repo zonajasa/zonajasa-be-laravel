@@ -15,14 +15,14 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         return DB::table($TableName);
     }
 
-    public function ValidateServiceByID(int $id): bool
+    public function ValidateServiceByID(int $Id): bool
     {
-        return !$this->Query('services')->where('id', $id)->exists() ? false : true;
+        return !$this->Query('services')->where('id', $Id)->exists() ? false : true;
     }
 
-    public function GetServiceByID(int $id)
+    public function GetServiceByID(int $Id)
     {
-        return $this->Query('services')->where('id', $id)->first();
+        return $this->Query('services')->where('id', $Id)->first();
     }
 
     public function GetServiceByKodeUser(string $KodeUser)
@@ -31,30 +31,50 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
     }
 
     //list jasa
+    public function GetKategoriByServiceID(int $ServiceId): array
+    {
+        return $this->Query('service_categories')->where('service_id', $ServiceId)->get()->toArray();
+    }
+    public function GetLayananByServiceID(int $ServiceId): array
+    {
+        return $this->Query('layanan_jasas')->where('service_id', $ServiceId)->get()->toArray();
+    }
+    public function GetGalleryByServiceID(int $ServiceId): array
+    {
+        return $this->Query('service_galleries')->where('service_id', $ServiceId)->get()->toArray();
+    }
+    public function GetOperationalByServiceID(int $ServiceId): array
+    {
+        return $this->Query('service_operationals')->where('service_id', $ServiceId)->get()->toArray();
+    }
+    public function GetWaktuByServiceID(int $ServiceId)
+    {
+        return $this->Query('service_times')->where('service_id', $ServiceId)->first();
+    }
 
     //create jasa
-    public function CreateService($data): int
+    public function CreateService($Data): int
     {
         return $this->Query('services')->insertGetId([
             'kode_user' => Auth::guard('api')->user()->kode_user,
-            'company' => $data['service']['company'],
-            'description' => $data['service']['description'],
-            'address' => $data['service']['address'],
-            'latitude' => $data['service']['latitude'],
-            'longitude' => $data['service']['longitude'],
+            'company' => $Data['service']['company'],
+            'description' => $Data['service']['description'],
+            'address' => $Data['service']['address'],
+            'latitude' => $Data['service']['latitude'],
+            'longitude' => $Data['service']['longitude'],
             'created_at' => now()->timezone(config('app.timezone')),
         ]);
     }
 
-    public function CreateServiceWithCategory(int $service_id, $data): void
+    public function CreateServiceWithCategory(int $ServiceId, $Data): void
     {
 
-        $categories = $data['service_kategori']['categoryId'] ?? [];
+        $categories = $Data['service_kategori']['categoryId'] ?? [];
         $insertCategories = [];
 
         foreach ($categories as $category) {
             $insertCategories[] = [
-                'service_id' => $service_id,
+                'service_id' => $ServiceId,
                 'categories_id' => $category,
                 'created_at' => now()->timezone(config('app.timezone'))
             ];
@@ -62,15 +82,15 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         $this->Query('service_categories')->insert($insertCategories);
     }
 
-    public function CreateServiceWithLayanan(int $service_id, $data): void
+    public function CreateServiceWithLayanan(int $ServiceId, $Data): void
     {
-        $layanans = $data['service_layanan'] ?? [];
+        $layanans = $Data['service_layanan'] ?? [];
         $insertLayanan = [];
 
 
         foreach ($layanans as $layanan) {
             $insertLayanan[] = [
-                'service_id' => $service_id,
+                'service_id' => $ServiceId,
                 'categories_id' => $layanan['categoryId'],
                 'name' => $layanan['name'],
                 'harga' => $layanan['harga'],
@@ -81,14 +101,14 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         $this->Query('layanan_jasas')->insert($insertLayanan);
     }
 
-    public function CreateServiceWithGallery(int $service_id, $data): void
+    public function CreateServiceWithGallery(int $ServiceId, $Data): void
     {
-        $galleries = $data['service_galeri']['image'] ?? [];
+        $galleries = $Data['service_galeri']['image'] ?? [];
         $insertGallery = [];
 
         foreach ($galleries as $gallery) {
             $insertGallery[] = [
-                'service_id' => $service_id,
+                'service_id' => $ServiceId,
                 'image' => $gallery,
                 'created_at' => now()->timezone(config('app.timezone'))
             ];
@@ -96,14 +116,14 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         $this->Query('service_galleries')->insert($insertGallery);
     }
 
-    public function CreateServiceWithOperational(int $service_id, $data): void
+    public function CreateServiceWithOperational(int $ServiceId, $Data): void
     {
-        $operationals = $data['service_operational']['day'] ?? [];
+        $operationals = $Data['service_operational']['day'] ?? [];
         $insertOperational = [];
 
         foreach ($operationals as $operational) {
             $insertOperational[] = [
-                'service_id' => $service_id,
+                'service_id' => $ServiceId,
                 'day' => $operational,
                 'created_at' => now()->timezone(config('app.timezone'))
             ];
@@ -111,40 +131,40 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         $this->Query('service_operationals')->insert($insertOperational);
     }
 
-    public function CreateServiceWithWaktu(int $service_id, $data): void
+    public function CreateServiceWithWaktu(int $ServiceId, $Data): void
     {
         $this->Query('service_times')->insert([
-            'service_id' => $service_id,
-            'openTime' => $data['service_waktu']['openTime'],
-            'closeTime' => $data['service_waktu']['closeTime'],
+            'service_id' => $ServiceId,
+            'openTime' => $Data['service_waktu']['openTime'],
+            'closeTime' => $Data['service_waktu']['closeTime'],
             'created_at' => now()->timezone(config('app.timezone'))
         ]);
     }
 
     //delete / tutup jasa
 
-    public function DeleteService(int $id)
+    public function DeleteService(int $Id)
     {
-        return $this->Query('services')->delete($id);
+        return $this->Query('services')->delete($Id);
     }
-    public function DeleteServiceWithCategory(int $service_id): void
+    public function DeleteServiceWithCategory(int $ServiceId): void
     {
-        $this->Query('service_categories')->where('service_id', $service_id)->delete();
+        $this->Query('service_categories')->where('service_id', $ServiceId)->delete();
     }
-    public function DeleteServiceWithLayanan(int $service_id): void
+    public function DeleteServiceWithLayanan(int $ServiceId): void
     {
-        $this->Query('layanan_jasas')->where('service_id', $service_id)->delete();
+        $this->Query('layanan_jasas')->where('service_id', $ServiceId)->delete();
     }
-    public function DeleteServiceWithGallery(int $service_id): void
+    public function DeleteServiceWithGallery(int $ServiceId): void
     {
-        $this->Query('service_galleries')->where('service_id', $service_id)->delete();
+        $this->Query('service_galleries')->where('service_id', $ServiceId)->delete();
     }
-    public function DeleteServiceWithOperational(int $service_id): void
+    public function DeleteServiceWithOperational(int $ServiceId): void
     {
-        $this->Query('service_operationals')->where('service_id', $service_id)->delete();
+        $this->Query('service_operationals')->where('service_id', $ServiceId)->delete();
     }
-    public function DeleteServiceWithWaktu(int $service_id): void
+    public function DeleteServiceWithWaktu(int $ServiceId): void
     {
-        $this->Query('service_times')->where('service_id', $service_id)->delete();
+        $this->Query('service_times')->where('service_id', $ServiceId)->delete();
     }
 }

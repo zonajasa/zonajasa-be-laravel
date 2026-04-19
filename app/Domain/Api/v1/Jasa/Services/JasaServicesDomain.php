@@ -23,6 +23,11 @@ class JasaServicesDomain
                 'address' => $service->address,
                 'latitude' => $service->latitude,
                 'longitude' => $service->longitude,
+                'kategori' => $this->repository->GetKategoriByServiceID($service->id),
+                'layanan' => $this->repository->GetLayananByServiceID($service->id),
+                'galeri' => $this->repository->GetGalleryByServiceID($service->id),
+                'operational' => $this->repository->GetOperationalByServiceID($service->id),
+                'waktu' => $this->repository->GetWaktuByServiceID($service->id),
             );
         }
 
