@@ -35,5 +35,14 @@ class JasaHandler extends JasaConstant
         }
     }
     public function update($id, Request $request) {}
-    public function delete($id, Request $request) {}
+    public function delete(int $id): JsonResponse
+    {
+        try {
+            return $this->usecase->delete($id, static::MESSAGE_INVALID_ID_SERVICE, static::MESSAGE_SUCCESS_DELETE_SERVICE);
+        } catch (\Exception $error) {
+            DB::rollBack();
+            Log::error('JasaServiceDomain Error: ' . $error->getMessage());
+            return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
+        }
+    }
 }
