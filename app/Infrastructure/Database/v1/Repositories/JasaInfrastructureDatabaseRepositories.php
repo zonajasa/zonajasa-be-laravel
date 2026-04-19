@@ -15,6 +15,23 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         return DB::table($TableName);
     }
 
+    public function ValidateServiceByID(int $id): bool
+    {
+        return !$this->Query('services')->where('id', $id)->exists() ? false : true;
+    }
+
+    public function GetServiceByID(int $id)
+    {
+        return $this->Query('services')->where('id', $id)->first();
+    }
+
+    public function GetServiceByKodeUser(string $KodeUser)
+    {
+        return $this->Query('services')->where('kode_user', $KodeUser)->first();
+    }
+
+    //list jasa
+
     //create jasa
     public function CreateService($data): int
     {
@@ -105,15 +122,6 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
     }
 
     //delete / tutup jasa
-    public function ValidateServiceByID(int $id): bool
-    {
-        return !$this->Query('services')->where('id', $id)->exists() ? false : true;
-    }
-
-    public function GetServiceByID(int $id)
-    {
-        return $this->Query('services')->where('id', $id)->first();
-    }
 
     public function DeleteService(int $id)
     {

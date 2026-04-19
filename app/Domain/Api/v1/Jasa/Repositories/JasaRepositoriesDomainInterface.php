@@ -8,7 +8,9 @@ interface JasaRepositoriesDomainInterface
 {
     //query builder
     public static function Query(string $TableName): Builder;
-
+    public function ValidateServiceByID(int $id): bool;
+    public function GetServiceByID(int $id);
+    public function GetServiceByKodeUser(string $KodeUser);
     //create
     public function CreateService($data): int;
     public function CreateServiceWithCategory(int $service_id, $data): void;
@@ -18,8 +20,6 @@ interface JasaRepositoriesDomainInterface
     public function CreateServiceWithWaktu(int $service_id, $data): void;
 
     //delete
-    public function ValidateServiceByID(int $id): bool;
-    public function GetServiceByID(int $id);
     public function DeleteService(int $id);
     public function DeleteServiceWithCategory(int $service_id): void;
     public function DeleteServiceWithLayanan(int $service_id): void;

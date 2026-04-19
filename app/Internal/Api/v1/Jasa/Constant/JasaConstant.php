@@ -9,4 +9,6 @@ class JasaConstant
     const MESSAGE_SUCCESS_CREATE_JASA = 'Berhasil membuat jasa';
     const MESSAGE_INVALID_ID_SERVICE = 'ID Service tidak ditemukan';
     const MESSAGE_SUCCESS_DELETE_SERVICE = 'Berhasil menutup layanan';
+    const MESSAGE_SUCCESS_GET_SERVICE = 'Berhasil mendapatkan jasa';
+    const MESSAGE_UNSUCCESS_GET_SERVICE = 'Gagal mendapatkan data karena jasa belum dibuat';
 }
