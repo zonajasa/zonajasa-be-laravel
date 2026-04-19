@@ -94,7 +94,7 @@ class AuthHandler extends AuthConstant
         }
 
         //store in dto for object request
-        $AuthRegisterDto = new AuthRegisterDTOs($request->nama_lengkap, $request->nomor_whatsapp, $request->password); //simpan object
+        $AuthRegisterDto = new AuthRegisterDTOs($request->full_name, $request->nomor_whatsapp, $request->password); //simpan object
 
         DB::beginTransaction();
         try {

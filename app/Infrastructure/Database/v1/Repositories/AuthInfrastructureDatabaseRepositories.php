@@ -118,7 +118,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'account_level_id' => 1, //default account level free
             'status_account' => 0, //default akun butuh di verifikasi terlebih dahulu
             'status_service' => 0, //default si user belum punya jasa
-            'full_name' => $AuthRegisterDto->NamaLengkap,
+            'full_name' => $AuthRegisterDto->FullName,
             'whatsapp' => formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp),
             'password' => Hash::make($AuthRegisterDto->Password),
         ]);

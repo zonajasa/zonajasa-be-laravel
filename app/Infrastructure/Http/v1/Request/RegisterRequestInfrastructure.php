@@ -13,7 +13,7 @@ class RegisterRequestInfrastructure
     public function rules(Request $request): ValidationValidator
     {
         return Validator::make($request->all(), [
-            'nama_lengkap' => 'required|string|min:8',
+            'full_name' => 'required|string|min:8',
             'nomor_whatsapp' => 'required|numeric|digits_between:10,14',
             'password' => 'required|string|min:8'
         ], $this->messages());
