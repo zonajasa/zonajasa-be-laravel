@@ -75,7 +75,7 @@ class AuthHandler extends AuthConstant
         try {
             $kode_user = $request->post('kode_user'); //should be body request
             if (empty($kode_user)) {
-                return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
+                return ErrorRes(static::MESSAGE_INPUT_KODE_USER_IS_NULL, 422);
             }
 
             return $this->usecase->AuthServiceResendOtp($kode_user, static::MESSAGE_SUCCESS_RESEND_OTP);
@@ -145,11 +145,17 @@ class AuthHandler extends AuthConstant
         DB::beginTransaction();
         try {
             $nomor_whatsapp = $request->post('nomor_whatsapp'); //should be body request
-            if (empty($nomor_whatsapp) || !is_numeric($nomor_whatsapp)) {
-                return ErrorRes(static::MESSAGE_INPUT_INVALID, 422);
+            if (empty($nomor_whatsapp)) {
+                return ErrorRes(static::MESSAGE_FORGOT_INPUT_IS_NULL);
+            }
+            if (!is_numeric($nomor_whatsapp)) {
+                return ErrorRes(static::MESSAGE_FORGOT_INPUT_INVALID_NUMERIC);
+            }
+            if (!isValidWhatsappNumber($nomor_whatsapp)) {
+                return ErrorRes(static::MESSAGE_FORGOT_INPUT_INVALID_DIGIT);
             }
 
-            $forgot = $this->usecase->AuthServiceForgotPassword((int)$nomor_whatsapp, static::MESSAGE_SUCCESS_FORGOT_PASSWORD);
+            $forgot = $this->usecase->AuthServiceForgotPassword($nomor_whatsapp, static::MESSAGE_SUCCESS_FORGOT_PASSWORD);
             DB::commit();
 
             if ($forgot instanceof JsonResponse) {

@@ -57,7 +57,7 @@ class WhatsAppHelper
         $digits = preg_replace('/\D/', '', $formatted);
 
         // Valid WhatsApp number should be 11-13 digits (628xxxxxxxxxxxx format)
-        return strlen($digits) >= 11 && strlen($digits) <= 13;
+        return strlen($digits) >= 11 && strlen($digits) <= 14;
     }
 
     /**

@@ -59,7 +59,7 @@ class AuthUsecase
         return $this->service->AuthRepositoryResendOtp($kode_user, $SuccessMessageResendOtp);
     }
 
-    public function AuthServiceForgotPassword(int $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
+    public function AuthServiceForgotPassword(string $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
     {
         // interact with domain: forgot password auth
         return $this->service->AuthRepositoryForgotPassword($nomor_whatsapp);
