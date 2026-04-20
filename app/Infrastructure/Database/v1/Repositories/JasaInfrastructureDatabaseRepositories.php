@@ -31,6 +31,12 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
     }
 
     //list jasa
+    public function GetAllKategori(int $limit)
+    {
+        return $this->Query('categories')->paginate($limit);
+    }
+
+    //index jasa
     public function GetKategoriByServiceID(int $ServiceId): array
     {
         return $this->Query('service_categories')->where('service_id', $ServiceId)->get()->toArray();

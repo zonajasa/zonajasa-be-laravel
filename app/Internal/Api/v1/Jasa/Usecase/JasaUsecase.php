@@ -11,6 +11,11 @@ class JasaUsecase
         private JasaServicesDomain $service
     ) {}
 
+    public function list(int $limit, string $SuccesGetCategory, string $MessageIfCateogoryIsNull): JsonResponse|array
+    {
+        return $this->service->list($limit, $SuccesGetCategory, $MessageIfCateogoryIsNull);
+    }
+
     public function index(string $KodeUser): array|null
     {
         //interact with domain index jasa

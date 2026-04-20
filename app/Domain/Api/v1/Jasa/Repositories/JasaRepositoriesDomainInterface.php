@@ -12,6 +12,9 @@ interface JasaRepositoriesDomainInterface
     public function GetServiceByID(int $Id);
     public function GetServiceByKodeUser(string $KodeUser);
 
+    //list data
+    public function GetAllKategori(int $limit);
+
     //index
     public function GetKategoriByServiceID(int $ServiceId): array;
     public function GetLayananByServiceID(int $ServiceId): array;

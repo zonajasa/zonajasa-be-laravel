@@ -11,4 +11,6 @@ class JasaConstant
     const MESSAGE_SUCCESS_DELETE_SERVICE = 'Berhasil menutup layanan';
     const MESSAGE_SUCCESS_GET_SERVICE = 'Berhasil mendapatkan jasa';
     const MESSAGE_UNSUCCESS_GET_SERVICE = 'Gagal mendapatkan data karena jasa belum dibuat';
+    const MESSAGE_CATEOGORY_IS_INVALID = 'Maaf kategori belum tersedia';
+    const MESSAGE_SUCCESS_GET_CATEGORY = 'Berhasil mendapatkan kategori';
 }

@@ -3,6 +3,7 @@
 namespace App\Domain\Api\v1\Jasa\Services;
 
 use App\Domain\Api\v1\Jasa\Repositories\JasaRepositoriesDomainInterface;
+use App\Infrastructure\Http\v1\Resources\CategoryResource;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JasaServicesDomain
@@ -10,6 +11,16 @@ class JasaServicesDomain
     public function __construct(
         private JasaRepositoriesDomainInterface $repository
     ) {}
+
+    public function list(int $limit, string $SuccesGetCategory, string $MessageIfCateogoryIsNull): JsonResponse|array
+    {
+        $category = $this->repository->GetAllKategori($limit);
+        if (!empty($category)) {
+            return OkRes($SuccesGetCategory, CategoryResource::collection($category));
+        }
+
+        return ErrorRes($MessageIfCateogoryIsNull);
+    }
 
     public function index(string $KodeUser): array|null
     {
