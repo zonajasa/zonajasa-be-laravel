@@ -8,4 +8,8 @@ interface ProfileRepositoriesDomainInterface
 {
     //query builder
     public static function Query(string $TableName): Builder;
+
+    //profile::update
+    public function ValidateUserByID(int $id): bool;
+    public function UpdateProfile(int $id, $data): void;
 }

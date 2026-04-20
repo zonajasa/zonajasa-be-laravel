@@ -13,4 +13,14 @@ class ProfileInfrastructureDatabaseRepositories implements ProfileRepositoriesDo
     {
         return DB::table($TableName);
     }
+
+    public function ValidateUserByID(int $id): bool
+    {
+        return !$this->Query('users')->where('id', $id)->exists() ? false : true;
+    }
+
+    public function UpdateProfile(int $id, $data): void
+    {
+        $this->Query('users')->where('id', $id)->update($data);
+    }
 }

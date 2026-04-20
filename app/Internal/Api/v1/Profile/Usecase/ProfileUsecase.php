@@ -9,4 +9,9 @@ class ProfileUsecase
     public function __construct(
         private ProfileServicesDomain $service
     ) {}
+
+    public function update(int $id, $request, string $MessageInvalidUserID, string $MessageSuccessFullyUpdateProfile)
+    {
+        return $this->service->update($id, $request, $MessageInvalidUserID, $MessageSuccessFullyUpdateProfile);
+    }
 }
