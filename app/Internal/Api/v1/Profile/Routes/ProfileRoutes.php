@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
     Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileHandler::class, 'index']);
+        Route::post('/', [ProfileHandler::class, 'index']);
         Route::put('/{id}', [ProfileHandler::class, 'update']);
     });
 });
