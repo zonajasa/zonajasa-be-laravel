@@ -13,6 +13,7 @@ Route::prefix('v1/user')->group(function () {
     Route::middleware('header')->group(function () {
         require base_path('app/Internal/Api/v1/Auth/Routes/AuthRoutes.php');
         require base_path('app/Internal/Api/v1/Jasa/Routes/JasaRoutes.php');
+        require base_path('app/Internal/Api/v1/Profile/Routes/ProfileRoutes.php');
     });
 
     //kalo true api debug nya jalan selain itu default nya hanya base api fitur
