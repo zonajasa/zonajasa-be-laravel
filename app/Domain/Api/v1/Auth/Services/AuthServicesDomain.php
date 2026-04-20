@@ -124,15 +124,15 @@ class AuthServicesDomain
     }
 
 
-    public function AuthRepositoryForgotPassword(int $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
+    public function AuthRepositoryForgotPassword(string $nomor_whatsapp): JsonResponse|AuthEntitiesDomain
     {
 
-        if (!$this->repository->ValidateNomorWhatsappIsExists($nomor_whatsapp)) {
+        if (!$this->repository->ValidateNomorWhatsappIsExists(formatWhatsappNumber($nomor_whatsapp))) {
             return ErrorRes('Nomor whatsapp tidak terdaftar', 422);
         }
 
         //validate & get user by nomor whatsapp
-        $user = $this->repository->ValidateNomorWhatsapp($nomor_whatsapp);
+        $user = $this->repository->ValidateNomorWhatsapp(formatWhatsappNumber($nomor_whatsapp));
 
         //Send otp ke whatsapp client
         $CodeOtp = $this->repository->SendOTP($user->whatsapp, $user->full_name);

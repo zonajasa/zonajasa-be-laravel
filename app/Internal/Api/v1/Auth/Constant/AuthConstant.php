@@ -14,8 +14,11 @@ class AuthConstant
     const MESSAGE_SUCCESS_PROFILE = 'Berhasil mendapatkan data profile';
     const MESSAGE_VERIFY_ACCOUNT = 'Maaf akun anda belum terverifikasi,harap segera lakukan verifikasi';
     const MESSAGE_INTERNAL_SERVER_ERROR = 'Maaf terjadi kesalahan pada sistem';
-    const MESSAGE_INPUT_INVALID = 'Input tidak valid';
+    const MESSAGE_FORGOT_INPUT_IS_NULL = 'Nomor whatsapp tidak boleh dikosongkan';
+    const MESSAGE_FORGOT_INPUT_INVALID_NUMERIC = 'Nomor whatsapp yang dikirim harus angka';
+    const MESSAGE_FORGOT_INPUT_INVALID_DIGIT = 'Nomor whatsapp yang dikirim maksimal 14 digit';
     const MESSAGE_SUCCESS_RESEND_OTP = 'Berhasil mengirim ulang OTP, silahkan cek kembali di WhatsApp anda';
     const MESSAGE_SUCCESS_FORGOT_PASSWORD = 'Berhasil melakukan permintaan reset password, silahkan cek kembali di WhatsApp anda';
     const MESSAGE_SUCCESS_RESET_PASSWORD = 'Berhasil reset password, silahkan login kembali dengan password baru anda';
+    const MESSAGE_INPUT_KODE_USER_IS_NULL = 'Kode user tidak boleh dikosongkan';
 }

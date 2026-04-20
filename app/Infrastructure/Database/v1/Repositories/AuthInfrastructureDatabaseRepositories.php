@@ -24,7 +24,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return !User::where('kode_user', $KodeUser)->exists() ? false : true;
     }
 
-    public function ValidateNomorWhatsapp(int $NomorWhatsapp): ?User
+    public function ValidateNomorWhatsapp(string $NomorWhatsapp): ?User
     {
         return User::where('whatsapp', $NomorWhatsapp)->first();
     }
@@ -34,7 +34,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         return !Hash::check($Password, $HashPassword) ? false : true;
     }
 
-    public function OTPSendRequestByWhatsapp(int $RandomCode, int $NomorWhatsapp, string $FullName): void
+    public function OTPSendRequestByWhatsapp(int $RandomCode, string $NomorWhatsapp, string $FullName): void
     {
 
         switch (config('app.whatsapp_gateway_mode')) {
@@ -42,7 +42,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
                 Http::withHeaders([
                     'Authorization' => config('services.fonte.device_token')
                 ])->post(config('services.fonte.api_base_url') . "/send", [
-                    'target' => (string)$NomorWhatsapp,
+                    'target' => formatWhatsappNumber($NomorWhatsapp),
                     'message' => "*{$RandomCode} Kode OTP Anda {$FullName}*\n\n"
                         . "Gunakan kode ini untuk verifikasi akun Anda.\n"
                         . "Jangan bagikan kode ini kepada siapa pun.\n"
@@ -66,7 +66,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         }
     }
 
-    public function SendOTP(int $NomorWhatsapp, string $FullName): int
+    public function SendOTP(string $NomorWhatsapp, string $FullName): int
     {
         $RandomCode = rand(100000, 999999); //generate random code OTP 6 digit
         $this->OTPSendRequestByWhatsapp($RandomCode, $NomorWhatsapp, $FullName);
@@ -92,7 +92,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         ])->first();
     }
 
-    public function GenerateSession(int $NomorWhatsapp): array|User
+    public function GenerateSession(string $NomorWhatsapp): array|User
     {
         $Data['user'] = User::where('whatsapp', $NomorWhatsapp)->with('role')->first();
 
@@ -118,13 +118,13 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
             'account_level_id' => 1, //default account level free
             'status_account' => 0, //default akun butuh di verifikasi terlebih dahulu
             'status_service' => 0, //default si user belum punya jasa
-            'full_name' => $AuthRegisterDto->NamaLengkap,
+            'full_name' => $AuthRegisterDto->FullName,
             'whatsapp' => formatWhatsappNumber($AuthRegisterDto->NomorWhatsapp),
             'password' => Hash::make($AuthRegisterDto->Password),
         ]);
     }
 
-    public function ValidateNomorWhatsappIsExists(int $NomorWhatsapp): bool|User
+    public function ValidateNomorWhatsappIsExists(string $NomorWhatsapp): bool|User
     {
         return !User::where('whatsapp', $NomorWhatsapp)->exists() ? false : true; //gak boleh insert no whatsapp yang sudah ada sebelumnya
     }
