@@ -4,6 +4,7 @@ namespace App\Infrastructure\Http\v1\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class CategoryResource extends JsonResource
 {
@@ -18,6 +19,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image,
+            'jasa' => ServiceCategoryResource::collection(DB::table('service_categories')->where('categories_id', $this->id)->get())
         ];
     }
 }

@@ -19,7 +19,8 @@ class JasaHandler extends JasaConstant
     public function list(Request $request): JsonResponse|array
     {
         try {
-            return $this->usecase->list($request->query('limit'), static::MESSAGE_SUCCESS_GET_CATEGORY, static::MESSAGE_CATEOGORY_IS_INVALID);
+            //default limit 5
+            return $this->usecase->list($request->query('limit', 5), static::MESSAGE_SUCCESS_GET_CATEGORY, static::MESSAGE_CATEOGORY_IS_INVALID);
         } catch (\Exception $error) {
             Log::error('JasaServiceDomain list Error: ' . $error->getMessage());
             return ErrorRes(static::MESSAGE_INTERNAL_SERVER_ERROR, 500);
