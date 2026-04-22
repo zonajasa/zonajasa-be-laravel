@@ -153,10 +153,18 @@ class DatabaseSeeder extends Seeder
             ]);
 
             DB::table('headers')->insert([
-                'platform' => 'mobile',
-                'version' => '1',
-                'client_key' => Str::random(12),
-                'created_at' => now()->timezone(config('app.timezone'))
+                [
+                    'platform' => 'mobile',
+                    'version' => '1',
+                    'client_key' => Str::random(12),
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ],
+                [
+                    'platform' => 'web',
+                    'version' => '1',
+                    'client_key' => Str::random(12),
+                    'created_at' => now()->timezone(config('app.timezone'))
+                ]
             ]);
             DB::commit();
             Log::info('Database seeding completed successfully.');

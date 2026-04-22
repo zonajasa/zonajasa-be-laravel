@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'auth' => App\Infrastructure\Http\v1\Middleware\AuthenticatedMiddleware::class,
-            'header' => \App\Infrastructure\Http\v1\Middleware\HeaderMiddleware::class
+            'user.header' => \App\Infrastructure\Http\v1\Middleware\UserHeaderMiddleware::class,
+            'admin.header' => \App\Infrastructure\Http\v1\Middleware\AdminHeaderMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

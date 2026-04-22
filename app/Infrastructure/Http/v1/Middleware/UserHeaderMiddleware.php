@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class HeaderMiddleware
+class UserHeaderMiddleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
@@ -27,17 +27,21 @@ class HeaderMiddleware
             return ErrorRes('Please insert client key', 401);
         }
 
-        $platform = DB::table('headers')->where('platform', $request->header('X-API-PLATFORM'))->first();
+        $header = DB::table('headers')->where('platform', $request->header('X-API-PLATFORM'))->first();
 
-        if (!$platform) {
+        if (!$header) {
             return ErrorRes('Wrong Platform', 401);
         }
 
-        if ($request->header('X-API-VERSION') != $platform->version) {
+        if ($header->platform != 'mobile') {
+            return ErrorRes('Platform is not allowed', 401);
+        }
+
+        if ($request->header('X-API-VERSION') != $header->version) {
             return ErrorRes('Wrong version', 401);
         }
 
-        if ($request->header('X-API-CLIENT-KEY') != $platform->client_key) {
+        if ($request->header('X-API-CLIENT-KEY') != $header->client_key) {
             return ErrorRes('Wrong client key', 401);
         }
 
