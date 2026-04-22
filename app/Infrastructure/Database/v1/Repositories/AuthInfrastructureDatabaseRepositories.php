@@ -99,7 +99,7 @@ class AuthInfrastructureDatabaseRepositories implements AuthRepositoriesDomainIn
         $TokenResult = $Data['user']->createToken('zonajasa');
         $TokenModel = $TokenResult->token;
 
-        $Expires = Carbon::now(config('app.timezone'))->addMinute();
+        $Expires = Carbon::now(config('app.timezone'))->addHour();
 
         $TokenModel->expires_at = $Expires;
         $TokenModel->save();
