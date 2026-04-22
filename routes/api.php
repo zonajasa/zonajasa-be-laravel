@@ -9,7 +9,11 @@ use Laravel\Passport\Token;
 
 #import auth routes:admin & mobile
 Route::prefix('v1/admin')->group(function () {
-    Route::middleware('admin.header')->group(function () {});
+    Route::middleware('admin.header')->group(function () {
+        Route::prefix('master-data')->group(function () {
+            require base_path('app/Internal/Web/MasterData/User/Routes/UserMasterRoutes.php');
+        });
+    });
 });
 
 
