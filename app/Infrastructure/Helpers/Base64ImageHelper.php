@@ -10,10 +10,9 @@ class Base64ImageHelper
     /**
      * @method Base64Image
      * @param $base64Image (base64 data format)
-     * @param $prefix (main image)
      * @param $dir (lokasi tempat meyimpan gambar)
      */
-    public static function Base64Image(string $base64Image, string $prefix, string $dir)
+    public static function Base64Image(string $base64Image, string $dir)
     {
         // Validasi format
         if (!preg_match('/^data:image\/(\w+);base64,/', $base64Image, $matches)) {

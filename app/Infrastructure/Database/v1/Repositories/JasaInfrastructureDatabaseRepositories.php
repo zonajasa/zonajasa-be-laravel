@@ -99,7 +99,7 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
 
             //jika upload gambar maka jalankan helper base64 proses
             if (!empty($layanan['image'])) {
-                $imagePath = Base64Image($layanan['image'], 'layanan', 'uploads/layanan');
+                $imagePath = Base64Image($layanan['image'], 'uploads/layanan');
             }
             $insertLayanan[] = [
                 'service_id' => $ServiceId,
@@ -119,9 +119,15 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
         $insertGallery = [];
 
         foreach ($galleries as $gallery) {
+            $imagePath = null;
+
+            //jika upload gambar maka jalankan helper base64 proses
+            if (!empty($gallery)) {
+                $imagePath = Base64Image($gallery, 'uploads/galeri');
+            }
             $insertGallery[] = [
                 'service_id' => $ServiceId,
-                'image' => $gallery,
+                'image' => $imagePath,
                 'created_at' => now()->timezone(config('app.timezone'))
             ];
         }

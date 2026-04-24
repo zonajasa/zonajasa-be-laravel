@@ -97,12 +97,11 @@ if (!function_exists('Base64Image')) {
     /**
      * @method Base64Image
      * @param $base64Image (base64 data format)
-     * @param $prefix (main image)
      * @param $dir (lokasi tempat meyimpan gambar)
      */
 
-    function Base64Image(string $base64Image, string $prefix, string $dir)
+    function Base64Image(string $base64Image, string $dir)
     {
-        return Base64ImageHelper::Base64Image($base64Image, $prefix, $dir);
+        return Base64ImageHelper::Base64Image($base64Image, $dir);
     }
 }
