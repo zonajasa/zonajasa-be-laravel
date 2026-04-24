@@ -1,5 +1,6 @@
 <?php
 
+use App\Infrastructure\Helpers\Base64ImageHelper;
 use App\Infrastructure\Helpers\JsonBuilder;
 use App\Infrastructure\Helpers\WhatsAppHelper;
 use Illuminate\Http\JsonResponse;
@@ -88,5 +89,20 @@ if (!function_exists('CustomError')) {
     function CustomError($validator, string $message, int $status = 422): JsonResponse
     {
         return JsonBuilder::CustomError($validator, $message, $status);
+    }
+}
+
+
+if (!function_exists('Base64Image')) {
+    /**
+     * @method Base64Image
+     * @param $base64Image (base64 data format)
+     * @param $prefix (main image)
+     * @param $dir (lokasi tempat meyimpan gambar)
+     */
+
+    function Base64Image(string $base64Image, string $prefix, string $dir)
+    {
+        return Base64ImageHelper::Base64Image($base64Image, $prefix, $dir);
     }
 }

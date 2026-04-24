@@ -95,12 +95,18 @@ class JasaInfrastructureDatabaseRepositories implements JasaRepositoriesDomainIn
 
 
         foreach ($layanans as $layanan) {
+            $imagePath = null;
+
+            //jika upload gambar maka jalankan helper base64 proses
+            if (!empty($layanan['image'])) {
+                $imagePath = Base64Image($layanan['image'], 'layanan', 'uploads/layanan');
+            }
             $insertLayanan[] = [
                 'service_id' => $ServiceId,
                 'categories_id' => $layanan['categoryId'],
                 'name' => $layanan['name'],
                 'harga' => $layanan['harga'],
-                'image' => $layanan['image'],
+                'image' => $imagePath, //handle image with base64,compress 75%
                 'created_at' => now()->timezone(config('app.timezone'))
             ];
         }
