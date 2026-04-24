@@ -16,7 +16,7 @@ class ProfileServicesDomain
         return array(
             'role_id' => $request['role_id'],
             'full_name' => $request['full_name'],
-            'image' => $request['image']
+            'image' => $request['image'] ? Base64Image($request['image'], 'uploads/profile') : null
         );
     }
     public function update(int $id, $request, string $MessageInvalidUserID, string $MessageSuccessFullyUpdateProfile): JsonResponse
